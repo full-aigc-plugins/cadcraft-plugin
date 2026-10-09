@@ -38,6 +38,7 @@ class PluginTests(unittest.TestCase):
             {"type": "stdio", "command": "cadcraft-cli", "args": ["mcp"]},
         )
 
+    @unittest.skipUnless(SKILLS_SOURCE.is_dir(), "independent skill checkout is not present")
     def test_independent_skill_source_matches_plugin(self):
         r = self.run_python(SYNC, "--check", SKILLS_SOURCE)
         self.assertEqual(r.returncode, 0, r.stderr)
