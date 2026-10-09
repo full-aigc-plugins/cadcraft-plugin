@@ -1,0 +1,7 @@
+{
+  "name": "cadcraft-plugin",
+  "owner": {"name": "full-aigc-plugins"},
+  "plugins": [
+    {"name": "cadcraft", "description": "CADCraft native MCP drawing and inspection tools", "version": "0.1.0-dev.0", "source": "./"}
+  ]
+}

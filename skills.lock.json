@@ -1,0 +1,10 @@
+{
+  "source": "full-aigc-skills/cadcraft-skills",
+  "source_version": "0.1.0-dev.0",
+  "source_commit": "5b80c9f3ce85924a7080b9c5d769583847e45e75",
+  "skills_sha256": {
+    "cadcraft-use": "7a3d0638f2245e414420ac95363895252e6fc527f9bf11e482c6633215e5cfdb",
+    "cadcraft-cli": "331230390ec8561caa34f8b16a56c5684794f892000a2bb92b93e9e382eb7aa9",
+    "cadcraft-mcp": "bd63383695da499f5da712db8db686117a7f801d8ff8a48b6f126f41c541f488"
+  }
+}
