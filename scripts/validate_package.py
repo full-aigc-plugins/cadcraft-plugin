@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validate the portable manifest, MCP launcher, and pinned skill snapshot."""
 
+import runpy
 import hashlib
 import json
 from pathlib import Path
@@ -34,7 +35,7 @@ def main() -> None:
     require((ROOT / "scripts" / "launch.py").is_file(), "launcher missing")
     hashes = lock.get("skills_sha256")
     require(isinstance(hashes, dict) and set(hashes) == {"cadcraft-use", "cadcraft-cli", "cadcraft-mcp"}, "skill lock is incomplete")
-    require({p.name for p in (ROOT / "skills").iterdir() if p.is_dir()} == set(hashes), "plugin skill set differs from lock")
+    require({p.name for p in (ROOT / "skills").iterdir() if p.is_dir()} == set(hashes) | runpy.run_path(str(ROOT / "scripts/validate_editor_scenes.py"))["candidate_names"](ROOT), "plugin skill set differs from lock")
     for name, expected in hashes.items():
         skill = ROOT / "skills" / name / "SKILL.md"
         require(skill.is_file(), f"missing skill: {name}")

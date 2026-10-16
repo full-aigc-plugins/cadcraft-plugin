@@ -1,0 +1,19 @@
+{
+  "name": "cadcraft",
+  "version": "0.1.0-dev.0",
+  "description": "Control CADCraft drawings through its native MCP server and independently pinned skills.",
+  "author": {
+    "name": "Full AIGC Plugins",
+    "url": "https://github.com/full-aigc-plugins"
+  },
+  "homepage": "https://github.com/full-aigc-plugins/cadcraft-plugin",
+  "repository": "https://github.com/full-aigc-plugins/cadcraft-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "cadcraft",
+    "cad",
+    "drafting",
+    "mcp"
+  ],
+  "skills": "./skills/"
+}

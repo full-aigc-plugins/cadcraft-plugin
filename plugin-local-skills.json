@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "dest": "skills/",
+  "skills": [
+    "cadcraft-compare-revisions",
+    "cadcraft-dimension-part",
+    "cadcraft-editor",
+    "cadcraft-floor-plan",
+    "cadcraft-layer-cleanup",
+    "cadcraft-sheet-export",
+    "cadcraft-trace-reference"
+  ]
+}

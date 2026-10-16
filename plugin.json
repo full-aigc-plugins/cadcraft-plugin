@@ -10,18 +10,30 @@
   "homepage": "https://github.com/full-aigc-plugins/cadcraft-plugin",
   "repository": "https://github.com/full-aigc-plugins/cadcraft-plugin",
   "license": "Apache-2.0",
-  "keywords": ["cadcraft", "cad", "drafting", "mcp"],
+  "keywords": [
+    "cadcraft",
+    "cad",
+    "drafting",
+    "mcp"
+  ],
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "CADCraft",
+        "displayName": "CADCraft Use",
         "shortDescription": "Create and inspect CAD drawings",
         "longDescription": "Use CADCraft's native command engine through MCP to draw, inspect, render, and save 2D CAD documents. Requires cadcraft-cli on the host.",
         "developerName": "Full AIGC Plugins",
         "category": "Productivity",
-        "capabilities": ["Read", "Write"],
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
         "websiteURL": "https://github.com/full-aigc-plugins/cadcraft-plugin",
-        "defaultPrompt": ["Create a CADCraft drawing and verify its geometry"]
+        "defaultPrompt": [
+          "Create a CADCraft drawing and verify its geometry"
+        ],
+        "logo": "./assets/official-logo.png",
+        "logoDark": "./assets/official-logo.png"
       }
     }
   }
