@@ -32,7 +32,7 @@ def main() -> int:
         raise ValueError("independent skill source has no Git commit")
     manifest = json.loads((source / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
     expected = [f"./skills/{name}" for name in SKILLS]
-    if manifest.get("skills") != expected:
+    if not isinstance(manifest.get("skills"), list) or not set(expected) <= set(manifest["skills"]):
         raise ValueError("skill source manifest differs from the supported skill set")
     hashes = {}
     for name in SKILLS:
