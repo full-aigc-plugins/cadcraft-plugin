@@ -8,27 +8,27 @@
     },
     {
       "name": "cadcraft-floor-plan",
-      "sha256": "9c01f8894a95b46178353b42518e45b1e081a27df6c98cf0268bb060eef73438"
+      "sha256": "747e92963a4ed8822f2bf51b3d017e170f3f4f1c482d65679779c95703909348"
     },
     {
       "name": "cadcraft-dimension-part",
-      "sha256": "c93ae82fdd267de8fb69ed5b2dff17b0e825b2ade1449269e54bace89d16b2f7"
+      "sha256": "6e236c5767e1a51574f07d2a640058bcd4cdc1c2453509abdfc5b9ddc0397d41"
     },
     {
       "name": "cadcraft-trace-reference",
-      "sha256": "2ed79081bae491d45d1b9ab301c6e2c3affe42dbd09dfe5f922694654fbd33fe"
+      "sha256": "fffa7d6cba9348fbcc89c4971e9354f285c533306528206c7d59c60fec852cfd"
     },
     {
       "name": "cadcraft-layer-cleanup",
-      "sha256": "6af5e73d7bb89b75ef3d02a2913e0817d064926ace130b5082821715066c9be1"
+      "sha256": "d4aeda1709c992b5550e1d64ddb5504303355618ecea42e6b30b7f4b771f8562"
     },
     {
       "name": "cadcraft-sheet-export",
-      "sha256": "b6f6aa4eca6b6e3bd81e9aaeac0ef26c39c95798adf8e9551dd767a0e2bd95d8"
+      "sha256": "df2b8ce929cc36e0f1c610a08dc71823c9bf62b738c5855f95ea902b768f19d5"
     },
     {
       "name": "cadcraft-compare-revisions",
-      "sha256": "7d52be9cd6a9f709b6d19ce0913af6b09e327f61877633f617b15beead9fcece"
+      "sha256": "cda74b1db9f73bc7a4224f8e915447201a3edf31ec6234067d4393935597015d"
     }
   ]
 }

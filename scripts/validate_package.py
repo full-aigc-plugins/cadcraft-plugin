@@ -30,12 +30,20 @@ def main() -> None:
     require(re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+-dev\.[0-9]+", plugin.get("version", "")) is not None, "development version required")
     require(codex.get("version") == plugin["version"] == claude["plugins"][0]["version"], "host manifest versions differ")
     require(mcp.get("$schema") == MCP_SCHEMA and set(mcp) == {"$schema", "mcpServers"}, "invalid MCP manifest")
-    server = mcp["mcpServers"]["cadcraft"]
-    require(server == {"type": "stdio", "command": "cadcraft-cli", "args": ["mcp"]}, "MCP launcher contract changed")
+    server = mcp["mcpServers"].get("cadcraft-editor")
+    require(server == {"type": "stdio", "command": "node", "args": ["${PLUGIN_ROOT}/ui/dist/adapter.mjs"]}, "MCP launcher contract changed")
     require((ROOT / "scripts" / "launch.py").is_file(), "launcher missing")
     hashes = lock.get("skills_sha256")
     require(isinstance(hashes, dict) and set(hashes) == {"cadcraft-use", "cadcraft-cli", "cadcraft-mcp"}, "skill lock is incomplete")
-    require({p.name for p in (ROOT / "skills").iterdir() if p.is_dir()} == set(hashes) | runpy.run_path(str(ROOT / "scripts/validate_editor_scenes.py"))["candidate_names"](ROOT), "plugin skill set differs from lock")
+    local = json.loads((ROOT / "plugin-local-skills.json").read_text(encoding="utf-8"))
+    require(local.get("version") == 1 and local.get("dest") == "skills/", "invalid local skill registry")
+    names = local.get("skills", [])
+    require(isinstance(names, list) and len(names) == len(set(names)), "invalid local skill names")
+    for name in names:
+        require(re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name) is not None, "invalid local skill name")
+        path = ROOT / "skills" / name / "SKILL.md"
+        require(path.is_file() and path.read_text().startswith(f"---\nname: {name}\n"), "missing local skill: " + name)
+    require({p.name for p in (ROOT / "skills").iterdir() if p.is_dir()} == set(hashes) | set(names) | runpy.run_path(str(ROOT / "scripts/validate_editor_scenes.py"))["candidate_names"](ROOT), "plugin skill set differs from registries")
     for name, expected in hashes.items():
         skill = ROOT / "skills" / name / "SKILL.md"
         require(skill.is_file(), f"missing skill: {name}")

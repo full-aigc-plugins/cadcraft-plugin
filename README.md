@@ -87,3 +87,7 @@ Deep links: [Architecture](docs/CADCraft-Plugin-Architecture.md) · [First use](
 Plugin display name: **CADCraft Use**. Official upstream icon provenance and licenses are included under `assets/official-icon-source.json` and adjacent LICENSE files.
 
 源码增强候选采用 `ui/source.lock.json` 与 `ui/build-source.py`；兼容更新查询本插件自有 GitHub Releases，失败回退内置，原版 Web 不替换增强自动化运行时。当前会话保留；宿主安装验收另行记录。
+
+## 绘图场景操作手册
+
+新增8条安装板、法兰、门洞、网格、路由、孔列、缺口和图框流程，见 [cadcraft-scenario-playbooks](skills/cadcraft-scenario-playbooks/SKILL.md)。包含真实方法、参数和保存重开检查；技术运行状态与图样效果验收分别记录。
