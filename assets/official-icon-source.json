@@ -1,0 +1,13 @@
+{
+  "name": "cadcraft",
+  "icon": "cadcraft/icon.png",
+  "source": "https://raw.githubusercontent.com/storytold/cadcraft/e707ab4d7cc10102e550ad4c5bcecef1084a9baa/assets/app-icon/cadcraft-1024.png",
+  "homepage": "https://github.com/storytold/cadcraft",
+  "matchedBy": "upstream-app-icon",
+  "mimeType": "image/png",
+  "license": "MIT",
+  "modifications": "Square full-bleed background; 256px PNG. Artwork preserved; corner rounding delegated to client.",
+  "sha256": "522552718e50e2dd2f0abe2df922498aef713d2e73805d8c8dc9777333df8be0",
+  "localFile": "./assets/official-logo.png",
+  "displayName": "CADCraft Use"
+}

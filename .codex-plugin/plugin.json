@@ -1,12 +1,18 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.0",
+  "version": "0.1.0-dev.20261017.3",
   "description": "CADCraft native MCP and skills for precise 2D drafting.",
   "skills": "./skills/",
   "interface": {
-    "displayName": "CADCraft",
+    "displayName": "CADCraft Use",
     "shortDescription": "Create and inspect CAD drawings",
     "category": "Productivity",
-    "capabilities": ["Read", "Write"]
-  }
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "logo": "./assets/official-logo.png",
+    "logoDark": "./assets/official-logo.png"
+  },
+  "mcpServers": "./.codex-plugin/mcp.json"
 }
