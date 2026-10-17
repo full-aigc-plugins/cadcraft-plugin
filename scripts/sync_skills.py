@@ -32,7 +32,7 @@ def main() -> int:
         raise ValueError("independent skill source has no Git commit")
     manifest = json.loads((source / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
     expected = [f"./skills/{name}" for name in SKILLS]
-    if manifest.get("skills") != expected:
+    if not isinstance(manifest.get("skills"), list) or not set(expected) <= set(manifest["skills"]):
         raise ValueError("skill source manifest differs from the supported skill set")
     hashes = {}
     for name in SKILLS:
@@ -43,12 +43,19 @@ def main() -> int:
     lock = {"source": "full-aigc-skills/cadcraft-skills", "source_version": manifest["version"], "source_commit": revision.stdout.strip(), "skills_sha256": hashes}
     lock_path = ROOT / "skills.lock.json"
     if args.check:
-        if not lock_path.is_file() or json.loads(lock_path.read_text(encoding="utf-8")) != lock:
-            raise ValueError("skills.lock.json differs from independent source")
+        pinned = json.loads(lock_path.read_text(encoding="utf-8"))
+        def at_pin(path):
+            r = subprocess.run(["git", "-C", str(source), "show", pinned["source_commit"] + ":" + path], capture_output=True, check=False)
+            if r.returncode:raise ValueError("pinned source revision unavailable: " + path)
+            return r.stdout
+        pinned_manifest = json.loads(at_pin(".claude-plugin/plugin.json"))
+        if pinned.get("source") != "full-aigc-skills/cadcraft-skills" or pinned.get("source_version") != pinned_manifest["version"]:
+            raise ValueError("source lock identity/version mismatch")
         for name in SKILLS:
+            source_hash = hashlib.sha256(at_pin("skills/" + name + "/SKILL.md")).hexdigest()
             target = ROOT / "skills" / name / "SKILL.md"
-            if not target.is_file() or digest(target) != hashes[name]:
-                raise ValueError(f"plugin skill differs from independent source: {name}")
+            if pinned["skills_sha256"].get(name) != source_hash or not target.is_file() or digest(target) != source_hash:
+                raise ValueError(f"plugin skill differs from pinned source: {name}")
     else:
         for name in SKILLS:
             target = ROOT / "skills" / name / "SKILL.md"

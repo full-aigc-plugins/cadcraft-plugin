@@ -1,0 +1,11 @@
+{
+  "name": "cadcraft",
+  "title": "CadCraft",
+  "repository": "https://github.com/full-aigc-plugins/cadcraft",
+  "commit": "fc4e98315a8d771b5ab832f0ade0b5e7b106df7f",
+  "version": "0.7.0",
+  "sourceStatus": "fork",
+  "releaseRepository": "full-aigc-plugins/cadcraft-plugin",
+  "patches": [],
+  "fontInput": "fonts.lock.json"
+}
