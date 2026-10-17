@@ -1,5 +1,10 @@
 # CADCraft Use
 
+## Installable editor development candidate
+
+`0.1.0-dev.20261017.1` is distributed through the Full AIGC plugin marketplace as a development prerelease. Node.js 24 is required. Git installations use `ui/bootstrap.mjs` to download and verify the pinned editor archive on first start; complete release ZIPs also include that archive unpacked for offline startup. No Rust build or npm installation is required. Startup diagnostics use stderr; stdio remains MCP-only. The editor shares its session with Agent commands. Full creative quality and all-host embedded UI acceptance are still incomplete. Existing dated validation below describes its original version.
+
+
 [简体中文](README.zh-CN.md) · Development version `0.1.0-dev.0` · Apache-2.0
 
 This plugin lets an agent create, inspect, render, and save CADCraft 2D drawings through CADCraft's native MCP server. It packages three pinned Agent Skills and a portable Agent Plugins 1.0.0 manifest. The CAD engine and `cadcraft-cli` remain external. It is for agent hosts that can load the package's skills and `mcp.json`; actual host installation has not yet been verified for this development build.

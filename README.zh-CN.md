@@ -1,5 +1,10 @@
 # CADCraft Use
 
+## Installable editor development candidate
+
+`0.1.0-dev.20261017.1` is distributed through the Full AIGC plugin marketplace as a development prerelease. Node.js 24 is required. Git installations use `ui/bootstrap.mjs` to download and verify the pinned editor archive on first start; complete release ZIPs also include that archive unpacked for offline startup. No Rust build or npm installation is required. Startup diagnostics use stderr; stdio remains MCP-only. The editor shares its session with Agent commands. Full creative quality and all-host embedded UI acceptance are still incomplete. Existing dated validation below describes its original version.
+
+
 [English](README.md) · 开发版 `0.1.0-dev.0` · Apache-2.0
 
 本插件让智能体通过 CADCraft 原生 MCP 服务创建、检查、渲染和保存二维图纸。它打包三个锁定版本的 Agent Skill 和 Agent Plugins 1.0.0 可移植清单。CAD 引擎与 `cadcraft-cli` 是外部依赖。适用于能够加载包内技能和 `mcp.json` 的智能体宿主；此开发版本尚未完成实际宿主安装验收。
