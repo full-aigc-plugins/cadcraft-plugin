@@ -9,6 +9,7 @@
     "cadcraft-layer-cleanup",
     "cadcraft-scenario-playbooks",
     "cadcraft-sheet-export",
-    "cadcraft-trace-reference"
+    "cadcraft-trace-reference",
+    "cadcraft-bolt-circle"
   ]
 }

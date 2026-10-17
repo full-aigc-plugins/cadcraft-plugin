@@ -29,6 +29,10 @@
     {
       "name": "cadcraft-compare-revisions",
       "sha256": "cda74b1db9f73bc7a4224f8e915447201a3edf31ec6234067d4393935597015d"
+    },
+    {
+      "name": "cadcraft-bolt-circle",
+      "sha256": "df596d78f4db18106233f2d8b61bd8bb857de9d6b6082487e9b6e042329604ba"
     }
   ]
 }
