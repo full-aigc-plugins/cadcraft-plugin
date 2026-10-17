@@ -1,6 +1,6 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261017.2",
+  "version": "0.1.0-dev.20261017.3",
   "url": "https://github.com/full-aigc-plugins/cadcraft-plugin/releases/download/v0.1.0-dev.20261017.2/cadcraft-runtime.tgz",
   "sha256": "887028e07939dfdcec10927fd0058f1fe97d7c4b407c3c4136a1cb8fbda28643",
   "files": {
@@ -43,5 +43,6 @@
     "host.js": "552b2c63586161a34ab12b5674c7d384b20a79050a46893df0be20a4eb7f3ec9",
     "host.js.LEGAL.txt": "eda25878a01ef5903efe932a6e7c99e175023a47ce70b7d7f901ab2c07c06562"
   },
-  "scope": "Pinned editor artifact; bundled upstream/build provenance remains in editor/BUILD.json or config.json. This does not certify all upstream main capabilities."
+  "scope": "Pinned editor artifact; bundled upstream/build provenance remains in editor/BUILD.json or config.json. This does not certify all upstream main capabilities.",
+  "catalogSha256": "6608f1b4f97b9e5a7d66fda168a44f3482c7be9a477012fc65e29e04753c2251"
 }
