@@ -33,7 +33,9 @@
           "Create a CADCraft drawing and verify its geometry"
         ],
         "logo": "./assets/official-logo.png",
-        "logoDark": "./assets/official-logo.png"
+        "logoDark": "./assets/official-logo.png",
+        "composerIcon": "./assets/official-logo.png",
+        "composerIconDark": "./assets/official-logo.png"
       }
     }
   }
