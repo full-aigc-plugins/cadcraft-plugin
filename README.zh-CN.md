@@ -118,4 +118,4 @@ python3 -m unittest discover -s tests -v
 
 ## 等角孔分布图开发候选
 
-新增 `cadcraft-bolt-circle`：实际句柄驱动极轴阵列，孔数/圆心/起始角参数化，独立CLI执行与保存重开检查。当前未发布新市场版本，Windows与真实宿主验收另行记录，不代表制造设计合格。
+新增 `cadcraft-bolt-circle`：实际句柄驱动极轴阵列，孔数/圆心/起始角参数化，独立CLI执行与保存重开检查。原生Windows六孔/偏移七孔及真实Codex几何同步通过；GUI尺寸文字和其他宿主仍待验收，不代表制造设计合格。

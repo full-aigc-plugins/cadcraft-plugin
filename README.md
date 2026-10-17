@@ -1,6 +1,6 @@
 # CADCraft Use
 
-当前可安装开发候选：`0.1.0-dev.20261017.5`。补齐官方输入框图标，Codex市场使用完整薄包快照以在安装前读取列表图标；运行资源沿用已核验的dev.20261017.2，不代表上游引擎升级或全部创作验收通过。
+开发预发布：`0.1.0-dev.20261018.1`。新增等角孔分布图技能；运行资源沿用已核验的dev.20261017.2，不代表上游引擎升级或全部创作验收通过。
 
 ## Installable editor development candidate
 
@@ -118,4 +118,4 @@ Plugin display name: **CADCraft Use**. Official upstream icon provenance and lic
 
 ## 等角孔分布图开发候选
 
-新增 `cadcraft-bolt-circle`：实际句柄驱动极轴阵列，孔数/圆心/起始角参数化，独立CLI执行与保存重开检查。当前未发布新市场版本，Windows与真实宿主验收另行记录，不代表制造设计合格。
+新增 `cadcraft-bolt-circle`：实际句柄驱动极轴阵列，孔数/圆心/起始角参数化，独立CLI执行与保存重开检查。原生Windows六孔/偏移七孔及真实Codex几何同步通过；GUI尺寸文字和其他宿主仍待验收，不代表制造设计合格。

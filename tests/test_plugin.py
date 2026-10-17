@@ -38,6 +38,11 @@ class PluginTests(unittest.TestCase):
             {"type": "stdio", "command": "node", "args": ["${PLUGIN_ROOT}/ui/bootstrap.mjs"]},
         )
 
+    def test_handshake_version_matches_plugin(self):
+        root = json.loads((ROOT / 'plugin.json').read_text())
+        runtime = json.loads((ROOT / 'ui/runtime.lock.json').read_text())
+        self.assertEqual(runtime['version'], root['version'])
+
     @unittest.skipUnless(SKILLS_SOURCE.is_dir(), "independent skill checkout is not present")
     def test_independent_skill_source_matches_plugin(self):
         r = self.run_python(SYNC, "--check", SKILLS_SOURCE)
