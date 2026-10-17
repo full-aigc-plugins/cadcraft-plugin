@@ -43,6 +43,18 @@ class PluginTests(unittest.TestCase):
         runtime = json.loads((ROOT / 'ui/runtime.lock.json').read_text())
         self.assertEqual(runtime['version'], root['version'])
 
+    def test_stale_release_gate_rejected(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as d:
+            copied = Path(d) / 'package'
+            shutil.copytree(ROOT, copied, ignore=shutil.ignore_patterns('.git', '__pycache__', '*.pyc'))
+            gate = copied / 'docs/verification/release-candidate.json'
+            data = json.loads(gate.read_text());data['currentVersion'] = '0.1.0-dev.0'
+            gate.write_text(json.dumps(data))
+            failed = subprocess.run([sys.executable, str(copied / 'scripts/validate_package.py')], capture_output=True, text=True)
+            self.assertNotEqual(failed.returncode, 0)
+            self.assertIn('release gate version differs', failed.stderr)
+
     @unittest.skipUnless(SKILLS_SOURCE.is_dir(), "independent skill checkout is not present")
     def test_independent_skill_source_matches_plugin(self):
         r = self.run_python(SYNC, "--check", SKILLS_SOURCE)

@@ -29,6 +29,11 @@ def main() -> None:
     require(set(plugin) <= {"$schema", "name", "version", "description", "author", "homepage", "repository", "license", "keywords", "extensions"}, "unexpected portable manifest field")
     require(re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+-dev\.[0-9]+(?:\.[0-9]+)*", plugin.get("version", "")) is not None, "development version required")
     require(codex.get("version") == plugin["version"] == claude["plugins"][0]["version"], "host manifest versions differ")
+    gate = json.loads((ROOT / 'docs/verification/release-candidate.json').read_text())
+    require(gate['currentVersion'] == plugin['version'] and gate['releaseTag'] == 'v' + plugin['version'], 'release gate version differs')
+    require(gate['releaseStatus'] == 'BLOCKED', 'development candidate must retain production block')
+    for relative in ['.claude-plugin/plugin.json', '.zcode-plugin/plugin.json', 'kimi.plugin.json', 'ui/runtime.lock.json']:
+        require(json.loads((ROOT / relative).read_text())['version'] == plugin['version'], 'version differs: ' + relative)
     require(mcp.get("$schema") == MCP_SCHEMA and set(mcp) == {"$schema", "mcpServers"}, "invalid MCP manifest")
     server = mcp["mcpServers"].get("cadcraft-editor")
     require(server == {"type": "stdio", "command": "node", "args": ["${PLUGIN_ROOT}/ui/bootstrap.mjs"]}, "MCP launcher contract changed")
