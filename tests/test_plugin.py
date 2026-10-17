@@ -35,7 +35,7 @@ class PluginTests(unittest.TestCase):
         self.assertEqual(json.loads(ROOT.joinpath("plugin.json").read_text())["name"], "cadcraft")
         self.assertEqual(
             json.loads(ROOT.joinpath("mcp.json").read_text())["mcpServers"]["cadcraft-editor"],
-            {"type": "stdio", "command": "node", "args": ["${PLUGIN_ROOT}/ui/dist/adapter.mjs"]},
+            {"type": "stdio", "command": "node", "args": ["${PLUGIN_ROOT}/ui/bootstrap.mjs"]},
         )
 
     @unittest.skipUnless(SKILLS_SOURCE.is_dir(), "independent skill checkout is not present")

@@ -8,7 +8,7 @@
     },
     {
       "name": "cadcraft-floor-plan",
-      "sha256": "747e92963a4ed8822f2bf51b3d017e170f3f4f1c482d65679779c95703909348"
+      "sha256": "1a17e6d4e4ccfe116baeed6038e757791f39ce4ed8290febb95e61134f9031c5"
     },
     {
       "name": "cadcraft-dimension-part",
@@ -16,7 +16,7 @@
     },
     {
       "name": "cadcraft-trace-reference",
-      "sha256": "fffa7d6cba9348fbcc89c4971e9354f285c533306528206c7d59c60fec852cfd"
+      "sha256": "ac348ba7122b2a106a6426d6fdcdedd4b3fec7b0166222ec2c6245a4cc24d1af"
     },
     {
       "name": "cadcraft-layer-cleanup",
