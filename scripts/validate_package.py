@@ -32,8 +32,11 @@ def main() -> None:
     gate = json.loads((ROOT / 'docs/verification/release-candidate.json').read_text())
     require(gate['currentVersion'] == plugin['version'] and gate['releaseTag'] == 'v' + plugin['version'], 'release gate version differs')
     require(gate['releaseStatus'] == 'BLOCKED', 'development candidate must retain production block')
-    for relative in ['.claude-plugin/plugin.json', '.zcode-plugin/plugin.json', 'kimi.plugin.json', 'ui/runtime.lock.json']:
+    for relative in ['.claude-plugin/plugin.json', '.zcode-plugin/plugin.json', 'kimi.plugin.json', 'package.json', 'dsh/package.json', 'ui/runtime.lock.json']:
         require(json.loads((ROOT / relative).read_text())['version'] == plugin['version'], 'version differs: ' + relative)
+    runtime = json.loads((ROOT / 'ui/runtime.lock.json').read_text())
+    require(runtime['url'].endswith('/v' + plugin['version'] + '/cadcraft-runtime.tgz'), 'runtime URL version differs')
+    require(hashlib.sha256((ROOT / 'ui/catalog.lock.json').read_bytes()).hexdigest() == runtime['catalogSha256'], 'runtime catalog digest differs')
     require(mcp.get("$schema") == MCP_SCHEMA and set(mcp) == {"$schema", "mcpServers"}, "invalid MCP manifest")
     server = mcp["mcpServers"].get("cadcraft-editor")
     require(server == {"type": "stdio", "command": "node", "args": ["${PLUGIN_ROOT}/ui/bootstrap.mjs"]}, "MCP launcher contract changed")

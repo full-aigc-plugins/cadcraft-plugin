@@ -72,8 +72,13 @@ export async function installAutomation(server, { directory, workspace, name, fi
     try { return await fn(args, extra); } catch (error) { return failure(error.message); }
   });
   for (const tool of catalog) {
+    if (name === "cadcraft" && tool.name === "inspect_drawing") {
+      tool.description += " Defaults to summary only (entities=false); use entities=true and limit for geometry, or query_entities for pagination.";
+      tool.inputSchema.properties.entities.default = false;
+    }
     if (tool.annotations?.readOnlyHint && tool.inputSchema.properties?.path) tool.annotations = { ...tool.annotations, readOnlyHint: false, destructiveHint: true };
     add(tool, async (args, extra) => {
+      if (name === "cadcraft" && tool.name === "inspect_drawing") args = { ...args, entities: args.entities ?? false };
       // Schemars serializes Rust Option defaults as null; the native facade omits None
       // when constructing engine parameters. Preserve that behavior without stripping
       // intentional null values inside a command's arbitrary params object.
@@ -83,7 +88,8 @@ export async function installAutomation(server, { directory, workspace, name, fi
         if (tool.name === "command_batch") args.steps = args.steps.map(omitNone);
       }
       const ids = [];
-      try { return await bridge.call(tool.name, args, extra.signal, async () => {
+      try {
+        const result = await bridge.call(tool.name, args, extra.signal, async () => {
         const inputs = [], directories = [], seen = new Set();
         let totalBytes = 0;
         async function stage(path, depth = 0) {
@@ -118,7 +124,20 @@ export async function installAutomation(server, { directory, workspace, name, fi
         }
         for (const path of argumentPaths(args)) await stage(path);
         return { inputs, directories, readOnly: tool.annotations?.readOnlyHint === true };
-      }); } finally {
+        });
+        // Web 引擎返回图片但不会将 render(path) 写入宿主文件系统；成功落盘后才报告完成。
+        if (name === "cadcraft" && tool.name === "render" && args.path && !result.isError) {
+          const image = result.content.find(item => item.type === "image" && item.mimeType === "image/png");
+          if (!image?.data) throw new Error("Render did not return a PNG; output was not saved");
+          const bytes = Buffer.from(image.data, "base64");
+          if (!bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) throw new Error("Render returned invalid PNG bytes; output was not saved");
+          const path = await writeOutput(workspace, args.path, bytes);
+          const written = [{ complete: true, path, bytes: bytes.length }];
+          return { ...result, content: [...result.content, { type: "text", text: JSON.stringify({ written }) }],
+            structuredContent: { ...result.structuredContent, written } };
+        }
+        return result;
+      } finally {
         for (const id of ids) files.delete(id);
         for (const [key, value] of outputs) if (!bridge.requests.has(value.id)) outputs.delete(key);
       }
