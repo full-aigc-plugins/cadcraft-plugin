@@ -7,7 +7,7 @@
     {
       "name": "cadcraft",
       "description": "CADCraft native MCP drawing and inspection tools",
-      "version": "0.1.0-dev.20261018.2",
+      "version": "0.1.0-dev.20261018.3",
       "source": "./"
     }
   ]
