@@ -13,7 +13,7 @@ This plugin belongs to **AIGC content creation**.
 
 > Draw, inspect, render, and save 2D CAD geometry through CADCraft's own command engine, with entity counts and a reopened DXF checked before delivery.
 
-[![Version](https://img.shields.io/badge/release-0.1.0--dev.20261018.4-1A73E8)](#positioning)
+[![Version](https://img.shields.io/badge/release-0.1.0--dev.20261019.1-1A73E8)](#positioning)
 [![Skills](https://img.shields.io/badge/skills-12-00A67E)](#skills)
 [![MCP servers](https://img.shields.io/badge/MCP%20servers-1-6E56CF)](#mcp-tools)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)

@@ -25,7 +25,7 @@ test('fresh runtime build includes the source server as well as adapter and brow
   assert.equal(/<div id="craft-notice" hidden>/.test(panel),true,'notice must be hidden before client initialization');
   assert.match(panel,/<div id="craft-stage">Loading CADCraft\.\.\.<\/div>/);
   const metadata=JSON.parse(await readFile(join(output,'editor/BUILD.json')));
-  assert.equal(metadata.pluginVersion,'0.1.0-dev.20261018.4');
+  assert.equal(metadata.pluginVersion,JSON.parse(await readFile(join(ui,'../plugin.json'),'utf8')).version);
   assert.equal(metadata.wasmBuildPluginVersion,'0.1.0-dev.20261018.2');
   assert.equal(metadata.version,'0.7.0');
 });

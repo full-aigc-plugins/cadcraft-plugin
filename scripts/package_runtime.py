@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--package-root', type=Path, default=source)
     parser.add_argument('--write-locks', action='store_true')
+    parser.add_argument('--repository', help='Verified GitHub remote when the portable manifest omits repository')
     args = parser.parse_args()
     runtime, package = args.runtime.resolve(), args.package_root.resolve()
     plugin = json.loads((package / 'plugin.json').read_text())
@@ -26,11 +27,13 @@ def main():
     if not re.fullmatch(r'\d+\.\d+\.\d+-dev\.[\d.]+', version):
         parser.error('a development plugin version is required')
     manifest = json.loads((runtime / 'editor/assets.json').read_text())
-    if manifest['name'] != plugin['name'] or manifest['version'] != version:
+    source_lock = package / 'ui/source.lock.json'
+    engine_name = json.loads(source_lock.read_text())['name'] if source_lock.exists() else plugin['name']
+    if manifest['name'] != engine_name or manifest['version'] != version:
         parser.error('build the runtime from the current plugin version before packaging')
     if args.output.exists():
         parser.error('output exists; choose a new archive path')
-    repository = plugin['repository'].removeprefix('https://github.com/').removesuffix('.git')
+    repository = (args.repository or plugin.get('repository', '')).removeprefix('https://github.com/').removesuffix('.git')
     if not re.fullmatch(r'[\w.-]+/[\w.-]+', repository):
         parser.error('expected a GitHub repository in plugin.json')
     with tempfile.TemporaryDirectory(prefix='cadcraft-package-') as folder:
@@ -60,7 +63,7 @@ def main():
             output.write(data)
         lock = {
             'name': plugin['name'], 'version': version,
-            'url': f'https://github.com/{repository}/releases/download/v{version}/cadcraft-runtime.tgz',
+            'url': f"https://github.com/{repository}/releases/download/v{version}/{plugin['name']}-runtime.tgz",
             'sha256': hashlib.sha256(data).hexdigest(), 'files': hashes,
             'catalogSha256': hashlib.sha256(catalog).hexdigest(),
             'scope': 'Source-built development runtime; public release and production acceptance are separate.',

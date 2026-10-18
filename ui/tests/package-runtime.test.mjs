@@ -18,7 +18,7 @@ test('packaged source version, archive hashes and bootstrap catalog agree withou
   t.after(()=>rm(root,{recursive:true,force:true}));
   const seed=join(root,'seed'),runtime=join(root,'runtime'),pkg=join(root,'plugin');
   await mkdir(join(seed,'assets'),{recursive:true});await mkdir(join(pkg,'ui'),{recursive:true});
-  const version='0.1.0-dev.20261018.4';
+  const version=JSON.parse(await readFile(join(ui,'../plugin.json'),'utf8')).version;
   await writeFile(join(pkg,'plugin.json'),JSON.stringify({name:'cadcraft',version,repository:'https://github.com/full-aigc-plugins/cadcraft-plugin'}));
   await writeFile(join(seed,'assets.json'),JSON.stringify({name:'cadcraft',title:'CADCraft',version,assets:[]}));
   await writeFile(join(seed,'tools.json'),JSON.stringify(await engineTools()));
@@ -30,7 +30,7 @@ test('packaged source version, archive hashes and bootstrap catalog agree withou
   assert.equal(result.ok,true,result.error);
   const lock=JSON.parse(await readFile(join(pkg,'ui/runtime.lock.json')));
   assert.equal(lock.version,version);
-  assert.match(lock.url,/v0\.1\.0-dev\.20261018\.4\/cadcraft-runtime.tgz$/);
+  assert.ok(lock.url.endsWith('/v'+version+'/cadcraft-runtime.tgz'));
   const bytes=await readFile(archive);
   assert.equal(createHash('sha256').update(bytes).digest('hex'),lock.sha256);
   const extracted=join(root,'extracted');await mkdir(extracted);

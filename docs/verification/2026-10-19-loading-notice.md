@@ -1,5 +1,7 @@
 # 重复加载提示修复
 
+> 本记录保留发布前修复阶段状态；后续发行验证见 [2026-10-19-release.md](2026-10-19-release.md)。
+
 用户截图中顶部“正在加载编辑器…”来自 `ui/runtime/client.mjs` 的 `craft-notice` 浮层；画布中央的 `Loading CADCraft…` 来自引擎自身。两者在初始化期间同时显示。
 
 ## 修改
