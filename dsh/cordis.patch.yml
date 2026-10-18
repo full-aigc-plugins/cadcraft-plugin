@@ -8,7 +8,7 @@
 
     - id: mcp-cadcraft-cadcraft-editor
       name: '@deepseek-ai/dsh-mcp-client'
-      disabled: !!js "!process.env.DSH_MCP_CADCRAFT"
+      disabled: !!js "process.env.DSH_MCP_CADCRAFT === '0'"
       config:
         serverName: "cadcraft-editor"
         toolCallTimeoutMs: 60000
