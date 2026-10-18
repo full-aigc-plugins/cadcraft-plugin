@@ -1,6 +1,6 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261018.1",
+  "version": "0.1.0-dev.20261018.4",
   "description": "Control CADCraft drawings through its native MCP server and independently pinned skills.",
   "type": "module",
   "main": "lib/index.js",

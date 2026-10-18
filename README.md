@@ -126,11 +126,13 @@ python3 scripts/launch.py --doctor
 
 | Tool | Purpose |
 |---|---|
-| `open_editor` | Open the editor for an absolute `workspace`; the first call binds the workspace |
-| `open_browser_editor` | Return an `editorUrl` for the same session when the host has a built-in browser |
+| `open_editor` | Default native design panel, registered as a conversation-side entrypoint; pass the absolute task `workspace` |
+| `open_browser_editor` | Explicit browser fallback for the same session; normal editor opening does not require this tool |
 | `editor_status` | Report whether the editor actually attached and is ready to accept commands |
 
 The bundled catalog in `ui/catalog.lock.json` exposes `command_line`, `script`, `execute`, `list_commands`, `inspect_drawing`, `query_entities`, `render`, `new_drawing`, `open`, and `save`, plus UI tools when a desktop session is attached. `render` produces an image of drawing content, not a screenshot of an application window; `screenshot`, `ui_inspect`, and `ui_click` require a desktop control connection.
+
+The default entry declares a thread entrypoint and a separate design surface. Tool metadata, resource metadata, and UI initialization all request `fullscreen`, which desktop hosts present as a separate conversation panel. `open_editor` does not return a browser URL. Wait for `editor_status({wait_ms:10000})` to return `state: "ready"`; use the browser fallback only when explicitly needed. Host rendering acceptance is recorded separately from metadata tests.
 
 ## Configuration
 

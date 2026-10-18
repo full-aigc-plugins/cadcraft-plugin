@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import { registerAppTool } from "@modelcontextprotocol/ext-apps/server";
 import { CHUNK_BYTES, chunk, createAssetReader, readWorkspaceFile, sha256 } from "./assets.mjs";
 import { installAutomation } from "./automation.mjs";
 
@@ -19,6 +20,7 @@ const readAsset = createAssetReader(join(directory, "assets"), config.assets);
 const server = new McpServer({ name, version }, { capabilities: { resources: {}, tools: {} } });
 const metadata = {
   ui: { prefersBorder: false },
+  "openai/ui": { availableDisplayModes: ["fullscreen"], preferredDisplayMode: "fullscreen" },
 };
 const resource = (uri, bytes) => ({
   contents: [{ uri, mimeType: "application/octet-stream", blob: bytes.toString("base64") }],
@@ -44,13 +46,15 @@ server.registerResource("file-chunks", new ResourceTemplate(`ui://${name}/file/{
   if (!bytes) throw new Error("File expired; open it again");
   return resource(uri.href, chunk(bytes, part));
 });
-server.registerTool("open_editor", {
-  description: `Open ${title}'s interactive editor. Optionally load a file inside the current workspace. This opens the UI; it does not automate editing commands.`,
+const bridge = await installAutomation(server, { directory, workspace, name, files });
+registerAppTool(server, "open_editor", {
+  title: `${title} Design`,
+  description: `Open ${title} in the host's separate design panel (the conversation side panel on desktop). This is the default UI entry; no browser-opening step is needed. Optionally load a workspace file. Use open_browser_editor only as an explicit fallback.`,
   inputSchema: { path: z.string().max(4096).optional().describe("Workspace-relative file path") },
   annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
   _meta: {
     ui: { resourceUri: panelUri, surface: "editor", visibility: ["model", "app"] },
-    "openai/ui": { preferredModelDisplayMode: "fullscreen" },
+    "openai/ui": { preferredModelDisplayMode: "fullscreen", entrypoints: [{ type: "thread" }] },
   },
 }, async ({ path }) => {
   try {
@@ -69,6 +73,7 @@ server.registerTool("open_editor", {
         sha256: sha256(opened.bytes),
       };
     }
+    bridge.opened();
     return {
       content: [{ type: "text", text: file ? `Requested opening ${file.path} in ${title}; check the editor for import results.` : `Opened ${title}.` }],
       structuredContent: { editor: name, ...(file ? { file } : {}) },
@@ -77,5 +82,4 @@ server.registerTool("open_editor", {
     return { isError: true, content: [{ type: "text", text: error.message }] };
   }
 });
-await installAutomation(server, { directory, workspace, name, files });
 await server.connect(new StdioServerTransport());
