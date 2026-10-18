@@ -1,121 +1,199 @@
 # CADCraft Use
 
-开发预发布：`0.1.0-dev.20261018.3`。新增参数化房间平面图方法与文档中文字体修复；完整候选ZIP已通过真实Codex宿主操作、同页面中文修改和保存DXF独立重读。当前版本仍待公开发布；全部场景及所有宿主验收未完成。
+## Plugin marketplaces
 
-## Installable editor development candidate
+This plugin belongs to **AIGC content creation**.
 
-`0.1.0-dev.20261017.3` is distributed through the Full AIGC plugin marketplace as a development prerelease. Node.js 24 is required. Git installations use `ui/bootstrap.mjs` to download and verify the pinned editor archive on first start; complete release ZIPs also include that archive unpacked for offline startup. No Rust build or npm installation is required. Startup diagnostics use stderr; stdio remains MCP-only. The editor shares its session with Agent commands. Full creative quality and all-host embedded UI acceptance are still incomplete. Existing dated validation below describes its original version.
+| Category | Marketplace | Purpose |
+| --- | --- | --- |
+| Full-stack development | [Full Stack Plugins](https://github.com/partme-ai/full-stack-plugins) | Architecture and UI design, code understanding, quality checks, code review, workflow governance, and server operations |
+| AIGC content creation | [Full AIGC Plugins](https://github.com/partme-ai/full-aigc-plugins) | Image, video, audio, music, 3D, and multimodal content creation |
 
+![CADCraft Use — precise 2D drafting](assets/official-logo.png)
 
-## Previous development candidate
+> Draw, inspect, render, and save 2D CAD geometry through CADCraft's own command engine, with entity counts and a reopened DXF checked before delivery.
 
-`0.1.0-dev.20261017.1` is distributed through the Full AIGC plugin marketplace as a development prerelease. Node.js 24 is required. Git installations use `ui/bootstrap.mjs` to download and verify the pinned editor archive on first start; complete release ZIPs also include that archive unpacked for offline startup. No Rust build or npm installation is required. Startup diagnostics use stderr; stdio remains MCP-only. The editor shares its session with Agent commands. Full creative quality and all-host embedded UI acceptance are still incomplete. Existing dated validation below describes its original version.
+[![Version](https://img.shields.io/badge/release-0.1.0--dev.20261018.4-1A73E8)](#positioning)
+[![Skills](https://img.shields.io/badge/skills-12-00A67E)](#skills)
+[![MCP servers](https://img.shields.io/badge/MCP%20servers-1-6E56CF)](#mcp-tools)
+[![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
+[English](README.md) | [简体中文](README.zh-CN.md) · [Install](#installation) · [Quick start](#quick-start) · [Skills](#skills) · [MCP tools](#mcp-tools) · [Limits](#troubleshooting)
 
-[简体中文](README.zh-CN.md) · Development version `0.1.0-dev.0` · Apache-2.0
+## Positioning
 
-This plugin lets an agent create, inspect, render, and save CADCraft 2D drawings through CADCraft's native MCP server. It packages three pinned Agent Skills and a portable Agent Plugins 1.0.0 manifest. The CAD engine and `cadcraft-cli` remain external. It is for agent hosts that can load the package's skills and `mcp.json`; actual host installation has not yet been verified for this development build.
+`cadcraft` lets an agent drive CADCraft's existing command registry instead of inventing a second CAD engine: start a drawing, run native commands, inspect entities, render the sheet, and save a DXF that reopens with the expected geometry. It packages twelve skills, a portable manifest, and one embedded editor server.
+
+This is a development candidate. Production promotion is blocked, the current build is still pending public release, and GUI acceptance, desktop UI control, and external CAD compatibility remain separate open gates.
+
+| Property | Value |
+| --- | --- |
+| Plugin ID | `cadcraft` |
+| Display name | CADCraft Use |
+| Version | `0.1.0-dev.20261018.4` |
+| Stage | Installable development candidate, production promotion blocked |
+| Native engine | CADCraft 0.3.0 command registry; editor build bundled, CLI external |
+| Marketplace | `cadcraft-marketplace` |
+| License | Apache-2.0 |
+
+## Installation
+
+### Prerequisites
+
+- Codex is the host with recorded end-to-end evidence. Other hosts are not accepted.
+- Node.js 24 or newer is required by the embedded editor. The distributed package contains the editor build; no Rust toolchain and no `npm install` are needed at runtime.
+- Headless file tasks and the `cadcraft-cli` skill need an installed `cadcraft-cli` on the host. The plugin does not install it. Build or install it from the upstream CADCraft project, then check `cadcraft-cli --version` and `cadcraft-cli commands` in the host environment.
+- The first Git-based launch needs network access or a verified editor cache. `CRAFT_EDITOR_UPDATE=off` uses bundled assets.
+- `CADCRAFT_CLI` selects a binary only for `scripts/launch.py`; it does not change the editor entry in `mcp.json`.
+
+### From the plugin marketplace
+
+```bash
+codex plugin marketplace add partme-ai/full-aigc-plugins
+codex plugin add cadcraft@full-aigc-plugins
+```
+
+This candidate is still marked as pending public release, with `releaseStatus: BLOCKED`. To test the exact build, use the repository-local marketplace `cadcraft-marketplace`, pinned to `v0.1.0-dev.20261018.4`. Restart the host, open a new task, and ask for one small drawing before a full sheet.
+
+## Quick start
+
+1. Open the editor with an absolute workspace: “Open CADCraft for this folder and list the available commands.”
+2. Query the live command registry before drawing. Do not treat a skill example as the complete schema; parameters and enabled state come from the installed version.
+3. Run one bounded command, for example a circle at `[10,10]` with radius `4`, then inspect the drawing and confirm the expected entity count.
+4. Save to a **new absolute** `.dxf` path, reopen that exact file, and inspect again. Agree on any overwrite before saving over an existing file.
 
 ```text
-Agent host → pinned CADCraft Skills → cadcraft MCP stdio → cadcraft-cli → drawing/file
-                                                     ↘ optional desktop bridge → CADCraft UI
+Draw: Create a 120 × 80 mm plate with four 6 mm holes on a 20 mm inset.
+Inspect: List circles, lines, layers, and the handle of each new entity.
+Bolt circle: Place six holes on a 60 mm pitch-circle diameter starting at 0°.
+Export: Save the sheet to a new DXF, reopen it, and verify entity counts.
 ```
 
-| Fact | Current value |
-| --- | --- |
-| Plugin ID / version | `cadcraft` / `0.1.0-dev.0` |
-| Runtime entry | `mcp.json`: `cadcraft-cli mcp` on the host PATH |
-| Modes | Fresh headless session by default; optional loopback desktop bridge |
-| Package | `plugin.json`, `.codex-plugin/plugin.json`, `.claude-plugin/marketplace.json`, three skills |
-| Source baseline | CADCraft `0.3.0`; runtime commands must be discovered from the installed CLI |
-| License | [Apache-2.0](LICENSE) |
+Direct runtime checks for the external CLI and the optional launcher:
 
-## Architecture and boundaries
-
-The default MCP server is the upstream CLI itself, without a Python proxy. It owns drawing state, command execution, file I/O, and MCP responses. This package owns manifests, skill guidance, a source-commit/SHA-256 skill lock, validation, and an optional `scripts/launch.py` helper for diagnosis or desktop bridging. The helper calls the CLI by argument vector and replaces its process; it does not add durable state or exactly-once execution.
-
-| Path | Available tools | State boundary |
-| --- | --- | --- |
-| Default headless `cadcraft-cli mcp` | Drawing commands, inspection, render, open/save | One drawing session per MCP process; no desktop UI |
-| Desktop `cadcraft-cli mcp --connect 127.0.0.1:PORT` | Headless tools plus `screenshot`, `ui_inspect`, `ui_click` | State lives in the running CADCraft app |
-
-The plugin does not install the CLI, own credentials, guarantee external DXF/DWG compatibility, or automatically recover an uncertain remote write. See the [architecture](docs/CADCraft-Plugin-Architecture.md) and [Dreamina comparison](docs/CADCraft-Dreamina-Analysis.md) for evidence and planned improvements.
-
-## First use
-
-1. Install or build `cadcraft-cli` using the [upstream CADCraft instructions](https://github.com/storytold/cadcraft). In the **agent host's** environment, check `cadcraft-cli --version` and `cadcraft-cli commands`. The default `mcp.json` requires the executable on PATH; `CADCRAFT_CLI` affects only the optional helper.
-2. Load this local package using a host that understands its manifest and MCP configuration. No published marketplace release or tested host-install command is claimed for this development checkout. Confirm the host discovered the `cadcraft` MCP server and all three skills (`cadcraft-use`, `cadcraft-cli`, `cadcraft-mcp`).
-3. Check the package and runtime separately:
-
-   ```sh
-   python3 scripts/validate_package.py
-   python3 scripts/launch.py --doctor
-   ```
-
-4. In a fresh drawing session, use `list_commands`, then `execute` with `{"command":"circle","params":{"center":[10,10],"radius":4}}`. Use `inspect_drawing` to confirm one circle, `render` to inspect the image, then `save` to a **new absolute** `.dxf` path. Reopen that file and inspect again. Saving changes the filesystem; agree on any overwrite first.
-
-For a desktop session, start the CADCraft app with `--control 7979`, then configure a separate host MCP entry whose command and arguments are `python3`, `/absolute/path/to/cadcraft-plugin/scripts/launch.py`, `--connect`, and `127.0.0.1:7979`. The helper restricts `--connect` to loopback addresses. Verify the host actually exposes `screenshot` and `ui_inspect`; merely opening the TCP port is insufficient. Full steps and troubleshooting: [First-use guide](docs/First-Use.md).
-
-## Configuration and recovery
-
-`mcp.json` is the default configuration source. It contains no secrets or mutable plugin state. `CADCRAFT_CLI=/absolute/path/to/cadcraft-cli` can select a binary for `scripts/launch.py --doctor` or its desktop mode; it does **not** change the direct command in `mcp.json`. A headless MCP process loses its unsaved drawing when it exits, so save a file before restarting or transferring work.
-
-For every tool result, check `isError`; `command_line` may also return an `error` field inside an otherwise successful MCP result. The upstream desktop remote backend may reconnect and replay the same control request after a transport error. After a timeout, treat a create/delete/save action as **outcome unknown** and inspect the drawing or last saved file before deciding whether to act again. There is no plugin-side journal, deduplication, or automatic rollback.
-
-## Development and verification
-
-The independent source is [`full-aigc-skills/cadcraft-skills`](https://github.com/full-aigc-skills/cadcraft-skills). To refresh the bundled skill snapshot, first commit the source change in a clean local checkout, then run:
-
-```sh
-python3 scripts/sync_skills.py /path/to/cadcraft-skills
-python3 scripts/sync_skills.py --check /path/to/cadcraft-skills
-python3 scripts/validate_package.py
-python3 -m unittest discover -s tests -v
+```bash
+cadcraft-cli --version
+cadcraft-cli commands
+python3 scripts/launch.py --doctor
 ```
 
-`skills.lock.json` records source version, Git commit, and SHA-256 per `SKILL.md`. For the native integration tests, set `CADCRAFT_NATIVE_TEST_CLI` to a built `cadcraft-cli` before the unittest command. The current local suite covers manifest/lock integrity, launcher behavior, native MCP drawing/render/DXF round-trip, and a loopback TCP bridge. CI runs package validation and the unittest suite without the native CLI; native tests are skipped there. Host installation, real desktop UI, Windows, and external CAD compatibility remain separate unverified gates. See the [verification matrix](docs/CADCraft-Dreamina-Analysis.md#verification-gates).
+## What you can build
 
-## Project files
+| Workflow | Built-in path | Verifiable output |
+|:---|:---|:---|
+| Draw and inspect parts | `cadcraft-use`, `cadcraft-mcp` | Entity types, counts, handles, layers, and key coordinates |
+| Parametric hole patterns | `cadcraft-bolt-circle` | Polar array from a real handle, hole count and pitch circle checked |
+| Room plans | `cadcraft-floor-plan` | Room outline, openings, and wall geometry at stated dimensions |
+| Dimensions and layers | `cadcraft-dimension-part`, `cadcraft-layer-cleanup` | Part dimensions, cleaned layers, linetypes, duplicates |
+| Sheet output | `cadcraft-sheet-export` | Frame, paper, scale, and print output |
+| Revision comparison | `cadcraft-compare-revisions` | Geometry and annotation differences between two drawings |
+| Trace a reference | `cadcraft-trace-reference` | Two-axis calibration and a dimensioned vector outline |
+| Scripted scenarios | `cadcraft-scenario-playbooks` | Eight recipes with real methods, parameters, and reopen checks |
+| Visual editing | `cadcraft-editor` | Same-session UI plus a saved drawing file |
 
-| Path | Purpose |
-| --- | --- |
-| `plugin.json`, `mcp.json` | Portable package identity and native MCP server |
-| `.codex-plugin/`, `.claude-plugin/` | Host metadata |
-| `skills/`, `skills.lock.json` | Pinned skill copies and provenance |
-| `scripts/launch.py` | Optional doctor and desktop bridge launcher |
-| `scripts/sync_skills.py`, `scripts/validate_package.py` | Provenance sync and package validation |
-| `tests/` | Offline and optional native contract tests |
+## Skills
 
-Deep links: [Architecture](docs/CADCraft-Plugin-Architecture.md) · [First use](docs/First-Use.md) · [Dreamina comparison and roadmap](docs/CADCraft-Dreamina-Analysis.md). This repository is licensed under [Apache-2.0](LICENSE).
+### Entry and runtime
 
-## 场景技能开发候选
+| Skill | What it does |
+|---|---|
+| `cadcraft-use` | Choose the CLI or MCP path and define what a verified drawing means |
+| `cadcraft-cli` | Run headless file tasks with the installed `cadcraft-cli` |
+| `cadcraft-mcp` | Drive interactive, JSON, query, and render tools over MCP, including failure checks |
 
-已增加 6 个领域场景技能及 1 个内嵌编辑器入口。详见 [场景目录](docs/scene-skills.md)。本地未发布候选，不代表全部场景的创作质量已验收。
+### Drawing scenarios
 
-## 内嵌编辑器候选
+| Skill | What it does |
+|---|---|
+| `cadcraft-bolt-circle` | Build an equal-angle bolt pattern from a real handle and polar array |
+| `cadcraft-floor-plan` | Draw rooms, doors, and windows at given dimensions |
+| `cadcraft-dimension-part` | Dimension a mechanical part profile, holes, and sizes |
+| `cadcraft-layer-cleanup` | Clean layers, linetypes, and duplicate lines in a complex drawing |
+| `cadcraft-sheet-export` | Produce a sheet with frame, paper, scale, and print output |
+| `cadcraft-compare-revisions` | Compare geometry and annotations between two drawing versions |
+| `cadcraft-trace-reference` | Rebuild a dimensioned outline from confirmed reference control points |
 
-新增 MCP Apps 与宿主浏览器接入，详见 [配置与构建](docs/editor-integration.md)。`ui/dist/` 为本地生成物；首次分发须带齐生成物。
+### Playbooks and editor
 
-Plugin display name: **CADCraft Use**. Official upstream icon provenance and licenses are included under `assets/official-icon-source.json` and adjacent LICENSE files.
+| Skill | What it does |
+|---|---|
+| `cadcraft-scenario-playbooks` | Eight scenarios covering plates, flanges, door openings, grids, routing, hole rows, notches, and title frames |
+| `cadcraft-editor` | Open the real editor in an MCP Apps host or host browser and share one workspace session |
 
-源码增强候选采用 `ui/source.lock.json` 与 `ui/build-source.py`；兼容更新查询本插件自有 GitHub Releases，失败回退内置，原版 Web 不替换增强自动化运行时。当前会话保留；宿主安装验收另行记录。
+## MCP tools
 
-## 绘图场景操作手册
+`.codex-plugin/mcp.json` starts one stdio server, `cadcraft-editor`, from `ui/bootstrap.mjs`. The adapter adds three stable tools and passes through the bundled engine's command catalog.
 
-新增8条安装板、法兰、门洞、网格、路由、孔列、缺口和图框流程，见 [cadcraft-scenario-playbooks](skills/cadcraft-scenario-playbooks/SKILL.md)。包含真实方法、参数和保存重开检查；技术运行状态与图样效果验收分别记录。
+| Tool | Purpose |
+|---|---|
+| `open_editor` | Open the editor for an absolute `workspace`; the first call binds the workspace |
+| `open_browser_editor` | Return an `editorUrl` for the same session when the host has a built-in browser |
+| `editor_status` | Report whether the editor actually attached and is ready to accept commands |
 
-### 候选启动修正
+The bundled catalog in `ui/catalog.lock.json` exposes `command_line`, `script`, `execute`, `list_commands`, `inspect_drawing`, `query_entities`, `render`, `new_drawing`, `open`, and `save`, plus UI tools when a desktop session is attached. `render` produces an image of drawing content, not a screenshot of an application window; `screenshot`, `ui_inspect`, and `ui_click` require a desktop control connection.
 
-本候选先完成轻量MCP握手及能力发现，在首次工具或资源调用时校验/获取固定编辑器资源。修复多个编辑器首次下载阻塞宿主握手的问题。Windows通过Git安装时须启用Git长路径支持（`git config --global core.longpaths true`）；完整ZIP不包含历史验收记录，可避免Git检出长路径的问题。运行资源沿用已核验的dev.20261017.2制品，不以入口版本号冒充上游升级。
+## Configuration
 
-### Windows 启动兼容修正
+| Setting | Meaning |
+|---|---|
+| `${PLUGIN_ROOT}` | Expanded by the portable `plugin.json` and `mcp.json` |
+| `${CLAUDE_PLUGIN_ROOT}` | Expanded by the Claude Code manifest and root `.mcp.json` |
+| `CRAFT_EDITOR_UPDATE=off` | Use the bundled editor only and skip the update query |
+| `CRAFT_EDITOR_CACHE_DIR` | Alternate absolute cache directory; default is `~/.cache/full-aigc/editors` |
+| `CRAFT_WORKSPACE_ROOT` | Workspace root when the adapter is started directly |
+| `CRAFT_PANEL_METADATA_FILE` | Host panel metadata used by the ZCode and Claude Code entries |
+| `CADCRAFT_CLI` | Binary path for `scripts/launch.py --doctor` or its desktop mode only |
 
-规范化入口真实路径，能力清单校验统一使用 LF 换行，兼容 Windows Git CRLF 检出。
+## Architecture and security
 
-### 候选启动修正
+```mermaid
+flowchart LR
+    U[User] --> H[Agent host]
+    H --> S[12 skills]
+    S --> M[stdio MCP cadcraft-editor]
+    M --> E[Bundled CADCraft engine]
+    E --> D[DXF or export]
+    S --> C[External cadcraft-cli]
+    M -.->|loopback control| A[CADCraft desktop app]
+```
 
-本候选先完成轻量MCP握手及能力发现，在首次工具或资源调用时校验/获取固定编辑器资源。修复多个编辑器首次下载阻塞宿主握手的问题。Windows通过Git安装时须启用Git长路径支持（`git config --global core.longpaths true`）；完整ZIP不包含历史验收记录，可避免Git检出长路径的问题。运行资源沿用已核验的dev.20261017.2制品，不以入口版本号冒充上游升级。
+| Mode | Available tools | State boundary |
+|---|---|---|
+| Bundled editor over stdio MCP | Drawing commands, inspection, render, open/save | One drawing session per MCP process |
+| Desktop control connection | Headless tools plus `screenshot`, `ui_inspect`, `ui_click` | State lives in the running CADCraft app |
 
-## 等角孔分布图开发候选
+- The plugin owns manifests, skill guidance, a source-commit and SHA-256 skill lock, validation scripts, and the editor bridge. The CAD command engine belongs to CADCraft.
+- MCP runs over stdio. The editor page uses a loopback HTTP server with a random token and Host/Origin checks; workspace escapes are rejected.
+- There is no plugin-side operation journal, command deduplication, transaction, or automatic rollback. A transport response is not an exactly-once guarantee.
+- After a timeout on create, delete, or save, treat the outcome as unknown and inspect the drawing or the last saved file before acting again.
+- Manual browser exports land in `craft-exports/` with new file names; closing the process ends the session.
 
-新增 `cadcraft-bolt-circle`：实际句柄驱动极轴阵列，孔数/圆心/起始角参数化，独立CLI执行与保存重开检查。原生Windows六孔/偏移七孔及真实Codex几何同步通过；GUI尺寸文字和其他宿主仍待验收，不代表制造设计合格。
+## Troubleshooting
+
+| Symptom | Cause | What to do |
+|---|---|---|
+| `cadcraft-cli` not found | The plugin does not install the external CLI | Install or build it upstream, then put it on the host `PATH` for file tasks |
+| `screenshot` or `ui_inspect` missing | A headless session has no desktop UI tools | Start CADCraft with `--control PORT` and connect the launcher to loopback |
+| A desktop write times out | The upstream remote backend may replay the request | Inspect the drawing or saved file first; never resend blindly |
+| DWG export expected | Web does not support DWG | Deliver DXF, or convert in a desktop workflow that actually supports DWG |
+| Dimension text looks wrong in the GUI | GUI dimension text has not passed acceptance | Check the rendered sheet and report the exact version; do not claim GUI text is verified |
+| DXF opens here but not in another CAD app | External compatibility is unverified | Record the target application and its exact error; round-trip here is not external proof |
+| The embedded panel never appears | The host does not render MCP Apps | Use the `open_browser_editor` URL; a text result is not a rendered panel |
+| A hole pattern is treated as production-ready | The sample is a drawing exercise, not manufacturing design | Require an engineering review before fabrication |
+
+## Upgrade
+
+```bash
+codex plugin marketplace upgrade full-aigc-plugins
+codex plugin add cadcraft@full-aigc-plugins
+```
+
+The editor update is independent of the plugin version. `editor_status` reports whether the runtime came from a download, the cache, or bundled assets.
+
+## Contributing and support
+
+Open issues at <https://github.com/full-aigc-plugins/cadcraft-plugin/issues>. Include plugin, engine, and CLI versions, the mode (bundled editor, headless CLI, or desktop control), the command name and parameters, expected versus observed entity counts, and whether the saved file was reopened. Never attach private drawings without authorization.
+
+## License
+
+Apache-2.0. The three pinned upstream skills come from `full-aigc-skills/cadcraft-skills` and are locked by commit and per-file SHA-256; the CADCraft engine and CLI remain external. See [LICENSE](LICENSE) and [assets/official-icon-source.json](assets/official-icon-source.json).

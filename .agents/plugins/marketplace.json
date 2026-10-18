@@ -6,13 +6,13 @@
       "source": {
         "source": "url",
         "url": "https://github.com/full-aigc-plugins/cadcraft-plugin.git",
-        "ref": "v0.1.0-dev.20261018.3"
+        "ref": "v0.1.0-dev.20261018.4"
       },
       "interface": {
-        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/cadcraft-plugin@v0.1.0-dev.20261018.3/assets/official-logo.png"
+        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/cadcraft-plugin@v0.1.0-dev.20261018.4/assets/official-logo.png"
       },
-      "version": "0.1.0-dev.20261018.3",
-      "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/cadcraft-plugin@v0.1.0-dev.20261018.3/assets/official-logo.png"
+      "version": "0.1.0-dev.20261018.4",
+      "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/cadcraft-plugin@v0.1.0-dev.20261018.4/assets/official-logo.png"
     }
   ]
 }

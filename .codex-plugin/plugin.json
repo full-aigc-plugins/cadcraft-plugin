@@ -1,6 +1,6 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261018.3",
+  "version": "0.1.0-dev.20261018.4",
   "description": "CADCraft native MCP and skills for precise 2D drafting.",
   "skills": "./skills/",
   "interface": {
