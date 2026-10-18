@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261018.4",
+  "version": "0.1.0-dev.20261019.1",
   "description": "Control CADCraft drawings through its native MCP server and independently pinned skills.",
   "author": {
     "name": "Full AIGC Plugins",

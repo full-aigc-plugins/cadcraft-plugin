@@ -47,7 +47,7 @@ class PluginTests(unittest.TestCase):
         import shutil
         with tempfile.TemporaryDirectory() as d:
             copied = Path(d) / 'package'
-            shutil.copytree(ROOT, copied, ignore=shutil.ignore_patterns('.git', '__pycache__', '*.pyc'))
+            shutil.copytree(ROOT, copied, ignore=shutil.ignore_patterns('.git', '__pycache__', '*.pyc', '.local', 'dist', 'node_modules'))
             gate = copied / 'docs/verification/release-candidate.json'
             data = json.loads(gate.read_text());data['currentVersion'] = '0.1.0-dev.0'
             gate.write_text(json.dumps(data))
@@ -68,7 +68,7 @@ class PluginTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as d:
             copied = Path(d) / "cadcraft-plugin"
-            shutil.copytree(ROOT, copied, ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc"))
+            shutil.copytree(ROOT, copied, ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc", ".local", "dist", "node_modules"))
             valid = subprocess.run([sys.executable, str(copied / "scripts" / "validate_package.py")], capture_output=True, text=True)
             self.assertEqual(valid.returncode, 0, valid.stderr)
             skill = copied / "skills" / "cadcraft-use" / "SKILL.md"

@@ -1,46 +1,6 @@
 {
   "tools": [
     {
-      "name": "open_editor",
-      "description": "Open CadCraft's interactive editor. Optionally load a file inside the current workspace. This opens the UI; it does not automate editing commands.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "path": {
-            "description": "Workspace-relative file path",
-            "type": "string",
-            "maxLength": 4096
-          },
-          "workspace": {
-            "type": "string",
-            "description": "Absolute workspace path; set before opening an editor session."
-          }
-        },
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": false
-      },
-      "execution": {
-        "taskSupport": "forbidden"
-      },
-      "_meta": {
-        "ui": {
-          "resourceUri": "ui://cadcraft/panel.html",
-          "surface": "editor",
-          "visibility": [
-            "model",
-            "app"
-          ]
-        },
-        "openai/ui": {
-          "preferredModelDisplayMode": "fullscreen"
-        }
-      }
-    },
-    {
       "name": "command_line",
       "description": "Type one line at the CADCraft command line, exactly as a user would at an AutoCAD-style prompt. Starts commands by name or alias (LINE, L, CIRCLE, C, PLINE, RECTANG, MOVE, TRIM, OFFSET, ZOOM…) and answers the active prompt: points `x,y`, relative `@dx,dy`, polar `@dist<angle`, distances, keywords (e.g. `c` for Close), empty text = Enter. Spaces act as Enter, so `circle 0,0 5` works in one call. Returns the new prompt and command-line output, and `error` when the line was refused.",
       "inputSchema": {
@@ -144,11 +104,12 @@
     },
     {
       "name": "inspect_drawing",
-      "description": "Summary of the active drawing: entity counts, extents, layers, styles, blocks, layouts, selection, undo history and (optionally) entities with handles and geometry.",
+      "description": "Summary of the active drawing: entity counts, extents, layers, styles, blocks, layouts, selection, undo history and (optionally) entities with handles and geometry. Defaults to summary only (entities=false); use entities=true and limit for geometry, or query_entities for pagination.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "entities": {
+            "default": false,
             "type": "boolean"
           },
           "limit": {
@@ -628,8 +589,55 @@
       }
     },
     {
+      "name": "open_editor",
+      "title": "CadCraft Design",
+      "description": "Open CadCraft in the host's separate design panel (the conversation side panel on desktop). This is the default UI entry; no browser-opening step is needed. Optionally load a workspace file. Use open_browser_editor only as an explicit fallback.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "description": "Workspace-relative file path",
+            "type": "string",
+            "maxLength": 4096
+          },
+          "workspace": {
+            "type": "string",
+            "description": "Absolute workspace path; set before opening an editor session."
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      },
+      "_meta": {
+        "ui": {
+          "resourceUri": "ui://cadcraft/panel.html",
+          "surface": "editor",
+          "visibility": [
+            "model",
+            "app"
+          ]
+        },
+        "openai/ui": {
+          "preferredModelDisplayMode": "fullscreen",
+          "entrypoints": [
+            {
+              "type": "thread"
+            }
+          ]
+        },
+        "ui/resourceUri": "ui://cadcraft/panel.html"
+      }
+    },
+    {
       "name": "open_browser_editor",
-      "description": "Open the same editor session in the host built-in browser. Use the returned editorUrl with the host browser tool. Does not itself render the page.",
+      "description": "Explicit fallback for hosts without native design panels. Returns a browser URL for the same session; use open_editor for the default side-panel UI.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -644,10 +652,16 @@
     },
     {
       "name": "editor_status",
-      "description": "Report whether the actual editor has attached to this MCP session.",
+      "description": "Report not_opened, loading, ready or disconnected, the workspace and active panel. Optionally wait up to 30 seconds for readiness.",
       "inputSchema": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "wait_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 30000
+          }
+        }
       },
       "annotations": {
         "readOnlyHint": true
@@ -662,6 +676,12 @@
       "_meta": {
         "ui": {
           "prefersBorder": false
+        },
+        "openai/ui": {
+          "availableDisplayModes": [
+            "fullscreen"
+          ],
+          "preferredDisplayMode": "fullscreen"
         }
       }
     },

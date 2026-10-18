@@ -1,9 +1,10 @@
 import {installCanvasCapture} from './canvas-capture.mjs';
 installCanvasCapture(HTMLCanvasElement);
 import { App, PostMessageTransport } from "@modelcontextprotocol/ext-apps";
+import { requestEditorDisplayMode } from './display-mode.mjs';
 
 const settings = __CRAFT_SETTINGS__;
-const app = new App({ name: settings.name, version: settings.version }, {}, { autoResize: false });
+const app = new App({ name: settings.name, version: settings.version }, { availableDisplayModes: ['fullscreen'] }, { autoResize: false });
 const prefix = `ui://${settings.name}`;
 let loaded = false;
 let pendingFile;
@@ -68,7 +69,8 @@ const text = (zh, en) => chinese() ? zh : en;
 function message(value, error = false) {
   status.textContent = value;
   status.dataset.error = String(error);
-  notice.hidden = loaded && !error;
+  // 引擎已有加载画面；此浮层只用于需要处理的错误，避免叠加第二个加载提示。
+  notice.hidden = !error;
   retry.hidden = !error || !lastExport;
 }
 function fail(error) {
@@ -212,6 +214,7 @@ function installDownloads() {
 
 async function boot() {
   await app.connect(new PostMessageTransport(window.parent, window.parent));
+  await requestEditorDisplayMode(app);
   app.onhostcontextchanged();
   installDownloads();
   const manifest = await readJson(`${prefix}/assets.json`);

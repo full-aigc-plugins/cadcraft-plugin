@@ -7,9 +7,9 @@ license: Apache-2.0
 # cadcraft 内嵌编辑器
 
 1. 从当前已加载插件的工具列表找到 `cadcraft-editor` 服务。使用本任务工作区绝对路径调用 `open_editor`，首次调用传入 `workspace`；相对文件路径可在编辑器就绪后交给具体打开工具。
-2. 宿主支持原生 MCP Apps 时呈现 `ui://cadcraft/panel.html`。只有工具文字结果不代表界面已打开。
-3. Codex 未自动呈现面板时调用 `open_browser_editor`，把返回的 `editorUrl` 交给宿主的内置浏览器打开能力。Codex Desktop 可调用 `open_in_codex`，target 为 browser，url 为实际返回值。不要把本地页面路径猜成固定端口。
-4. 同一实例只打开一个编辑页。调用 `editor_status`，待 `attached` 或 `ready` 为 true 再执行；加载失败先处理页面错误。
+2. 默认通过原生 MCP Apps 在宿主独立设计面板打开 `ui://cadcraft/panel.html`；Codex Desktop 使用会话右侧面板。插件声明 thread 入口与 fullscreen 默认显示模式，普通 `open_editor` 不返回浏览器地址，不再另调浏览器工具。只有工具文字结果不代表界面已打开。
+3. 只有已确认宿主不支持原生设计面板，或用户明确要求浏览器备用入口时，才调用 `open_browser_editor`。它返回同一会话的 `editorUrl`；若使用 Codex Desktop 的 `open_in_codex`，指定 `placement:right`、target 为 browser。不要把浏览器备用验证当成默认原生面板验收，也不要猜测端口。
+4. 同一实例只打开一个编辑页。调用 `editor_status({wait_ms:10000})`，待 `state` 为 `ready` 再执行；加载失败先处理页面错误，不要重复创建面板。
 5. 本轮所有编辑使用同一服务。原生 CLI 与 Web 编辑器不是同一个内存文档，切换前必须先保存并显式重开。
 
 用 open/new_drawing 打开或新建，query_entities 核对几何；execute 执行命令，save 保存，render 预览。

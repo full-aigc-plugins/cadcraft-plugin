@@ -13,7 +13,7 @@
 
 > 通过 CADCraft 自己的命令引擎画图、查图、渲染并保存；交付前核对实体数量，再把 DXF 重开一遍。
 
-[![版本](https://img.shields.io/badge/release-0.1.0--dev.20261018.4-1A73E8)](#项目定位)
+[![版本](https://img.shields.io/badge/release-0.1.0--dev.20261019.1-1A73E8)](#项目定位)
 [![技能](https://img.shields.io/badge/skills-12-00A67E)](#技能)
 [![MCP 服务器](https://img.shields.io/badge/MCP%20servers-1-6E56CF)](#mcp-工具)
 [![许可证](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)

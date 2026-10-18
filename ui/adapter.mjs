@@ -28,7 +28,7 @@ async function prepareEditor(){
  await selection;
 }
 let workspace=workspacePath(process.env.CRAFT_WORKSPACE_ROOT || process.cwd());
-let client, connecting, http, origin, editorAttached=false, used=false, latestResult, catalog, browserOwner, browserToken, lastPoll=0;
+let client, connecting, http, origin, editorAttached=false, used=false, opened=false, everAttached=false, latestResult, catalog, browserOwner, browserToken, lastPoll=0;
 const token=randomBytes(32).toString('hex');
 const events=new Set();
 const notify=(data)=>{for(const res of events) res.write(`data: ${JSON.stringify(data)}\n\n`);};
@@ -36,18 +36,25 @@ async function upstream() {
  if (client) return client;
  if (!connecting) connecting=(async()=>{
   const transport=new StdioClientTransport({command:'node',args:[join(editorRoot,'server.mjs')],cwd:workspace,env:{...process.env,CRAFT_WORKSPACE_ROOT:workspace},stderr:'inherit'});
-  const next=new Client({name:'craft-editor-adapter',version:'0.1.0'});
+  const next=new Client({name:'craft-editor-adapter',version:config.version});
   try{await next.connect(transport,{timeout:5000});}catch(e){await next.close().catch(()=>{});throw e;} client=next; return next;
  })().finally(()=>{connecting=null;});
  return connecting;
 }
 async function selectWorkspace(value) {
  if (!value || resolve(value)===workspace) return;
- if(used || editorAttached) throw Error('当前编辑器已有会话；请保存并结束该 MCP 实例，再连接另一工作区。');
  const selected=await realpath(workspacePath(value));
+ if(selected===workspace)return;
  if(connecting) await connecting;
+ // 未连接时的失败查询与尚未就绪的打开请求没有图纸，不能因此锁住工作区。
+ if(everAttached) throw Error(`当前会话已绑定工作区 ${workspace}；为保留已有图纸，不能通过 open_editor 切换目录。请在该工作区保存，或使用以目标目录启动的独立 MCP 会话。`);
  if(client) await client.close();
- client=null; catalog=null; workspace=selected;
+ client=null; catalog=null; workspace=selected;opened=false;latestResult=null;
+}
+function editorStatus(pageId=null) {
+ const attached=editorAttached && Date.now()-lastPoll<45000;
+ return {editor:config.name,workspace,attached,state:attached?'ready':everAttached?'disconnected':opened?'loading':'not_opened',
+  canAttach:!attached || (!!pageId && browserOwner===pageId),panel:attached?(browserOwner?'browser':'host'):null,runtime};
 }
 async function tool(params, fromPage=false, pageId=null) {
  const {workspace:requested,...args}=params.arguments || {};
@@ -65,25 +72,32 @@ async function tool(params, fromPage=false, pageId=null) {
   }
   if(result.isError) return result;
   runtime={...runtime,upstream:config.upstream,buildKind:config.buildKind||'craft-derived-bundled'};
-  used=true; latestResult=result;
-  const url=await browserUrl();
-  const enriched={...result, content:[...result.content,{type:'text',text:`Editor page: ${url}\nWorkspace: ${workspace}\n页面需要加载完成后才能编辑；请调用 editor_status 检查。`}],structuredContent:{...result.structuredContent,editorUrl:url,workspace,runtime}};
+  used=true; opened=true; latestResult=result;
+  const url=params.name==='open_browser_editor'?await browserUrl():undefined;
+  const status=editorStatus();
+  const hint=status.attached?'设计面板已就绪，请复用当前面板。':url?'已请求备用浏览器编辑器；打开 editorUrl 后等待 editor_status.state=ready。':'已请求打开宿主的独立设计面板（桌面端会话右侧）。无需另开浏览器；请用 editor_status(wait_ms=10000) 等待 ready。';
+  const enriched={...result, content:[...result.content,{type:'text',text:`${url?`Editor page: ${url}\n`:''}Workspace: ${workspace}\n${hint}`}],structuredContent:{...result.structuredContent,...status,...(url?{editorUrl:url}:{})}};
   notify({type:'tool-result',result});
   return enriched;
  }
- if(params.name==='editor_status') return {content:[{type:'text',text:JSON.stringify({editor:config.name,workspace,attached:editorAttached && Date.now()-lastPoll<45000,runtime})}],structuredContent:{editor:config.name,workspace,attached:editorAttached && Date.now()-lastPoll<45000,runtime}};
- used=true;
+ if(params.name==='editor_status') {
+  const wait=args.wait_ms ?? 0;
+  if(!Number.isInteger(wait)||wait<0||wait>30000)throw Error('wait_ms must be an integer from 0 to 30000');
+  const until=Date.now()+wait;
+  while(!editorStatus().attached && Date.now()<until)await new Promise(resolve=>setTimeout(resolve,Math.min(100,until-Date.now())));
+  const status=editorStatus();return {content:[{type:'text',text:JSON.stringify(status)}],structuredContent:status};
+ }
  const result=await (await upstream()).callTool(params,undefined,{timeout:180000});
- if(params.name==='_editor_attach' && !result.isError) {editorAttached=true;lastPoll=Date.now();if(fromPage){browserOwner=pageId;browserToken=result.structuredContent.token;}}
+ if(params.name==='_editor_attach' && !result.isError) {editorAttached=true;everAttached=true;used=true;lastPoll=Date.now();if(fromPage){browserOwner=pageId;browserToken=result.structuredContent.token;}notify({type:'editor-status',status:editorStatus(pageId)});}
  if(params.name==='_editor_poll' && !result.isError)lastPoll=Date.now();
- if(params.name==='_editor_detach' && !result.isError) editorAttached=false;
+ if(params.name==='_editor_detach' && !result.isError) {editorAttached=false;notify({type:'editor-status',status:editorStatus()});}
  return result;
 }
 async function tools() {
  const result=await (await upstream()).listTools(); catalog=new Set(result.tools.map(t=>t.name));
  return {tools:[...result.tools.map(t=>t.name==='open_editor'?{...t,inputSchema:{...t.inputSchema,properties:{...t.inputSchema.properties,workspace:{type:'string',description:'Absolute workspace path; set before opening an editor session.'}}}}:t),
- {name:'open_browser_editor',description:'Open the same editor session in the host built-in browser. Use the returned editorUrl with the host browser tool. Does not itself render the page.',inputSchema:{type:'object',properties:{workspace:{type:'string'},path:{type:'string'}}}},
- {name:'editor_status',description:'Report whether the actual editor has attached to this MCP session.',inputSchema:{type:'object',properties:{}},annotations:{readOnlyHint:true}}]};
+ {name:'open_browser_editor',description:'Explicit fallback for hosts without native design panels. Returns a browser URL for the same session; use open_editor for the default side-panel UI.',inputSchema:{type:'object',properties:{workspace:{type:'string'},path:{type:'string'}}}},
+ {name:'editor_status',description:'Report not_opened, loading, ready or disconnected, the workspace and active panel. Optionally wait up to 30 seconds for readiness.',inputSchema:{type:'object',properties:{wait_ms:{type:'integer',minimum:0,maximum:30000}}},annotations:{readOnlyHint:true}}]};
 }
 async function body(req) {
  let size=0; const parts=[];
@@ -117,7 +131,7 @@ async function browserUrl() {
    res.setHeader('Cache-Control','no-store');res.setHeader('Referrer-Policy','no-referrer');res.setHeader('X-Content-Type-Options','nosniff');
    if(req.method==='GET' && route==='') {
     res.setHeader('Content-Type','text/html; charset=utf-8');
-    res.end(`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>${config.title}</title><style>html,body{margin:0;width:100%;height:100%;background:#20242b;color:#ddd;font:13px system-ui}header{height:32px;display:flex;align-items:center;padding:0 12px;gap:18px}iframe{width:100%;height:calc(100% - 32px);border:0}#status{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><header><b>${config.title}</b><span id="status">正在连接编辑器…</span></header><iframe sandbox="allow-scripts allow-same-origin" allow="autoplay; fullscreen"></iframe><script type="module" src="host.js"></script></html>`);
+    res.end(`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>${config.title}</title><style>html,body{margin:0;width:100%;height:100%;background:#20242b;color:#ddd;font:13px system-ui}header{height:32px;display:flex;align-items:center;padding:0 12px;gap:18px}iframe{width:100%;height:calc(100% - 32px);border:0}#status{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><header><b>${config.title}</b><span id="status">正在检查编辑器会话…</span><button id="connect" hidden>重新检查并连接</button></header><iframe sandbox="allow-scripts allow-same-origin" allow="autoplay; fullscreen"></iframe><script type="module" src="host.js"></script></html>`);
    } else if(req.method==='GET' && route==='host.js') {res.setHeader('Content-Type','text/javascript');res.end(await readFile(join(here,'host.js')));
    } else if(req.method==='GET' && route==='panel') {
     const result=await (await upstream()).readResource({uri:`ui://${config.name}/panel.html`});
@@ -140,6 +154,7 @@ async function browserUrl() {
      if(!catalog.has(params?.name) || params.name==='open_editor') throw Error('Unknown page tool');
      result=await tool(params,true,req.headers['x-craft-page']);
     } else if(method==='downloadFile') result=await saveDownload(params);
+    else if(method==='editorStatus') result=editorStatus(req.headers['x-craft-page']);
     else if(method==='initial') result=latestResult || {content:[],structuredContent:{editor:config.name}};
     else throw Error('Unsupported bridge method');
     res.setHeader('Content-Type','application/json');res.end(JSON.stringify(result));
@@ -150,7 +165,7 @@ async function browserUrl() {
  origin=`http://127.0.0.1:${http.address().port}`;
  return `${origin}/${token}/`;
 }
-const server=new Server({name:`${config.name}-editor`,version:'0.1.0'},{capabilities:{tools:{},resources:{}}});
+const server=new Server({name:`${config.name}-editor`,version:config.version},{capabilities:{tools:{},resources:{}}});
 server.setRequestHandler(ListToolsRequestSchema,tools);
 server.setRequestHandler(CallToolRequestSchema,async({params})=>{try{return await tool(params);}catch(e){return {isError:true,content:[{type:'text',text:e.message}]};}});
 server.setRequestHandler(ListResourcesRequestSchema,async(p)=>withPanelMetadata(await (await upstream()).listResources(p.params), panelMetadata));

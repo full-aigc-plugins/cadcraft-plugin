@@ -15,6 +15,7 @@ export class EditorBridge {
       throw new Error("This editor already has an active panel. Close it before opening another.");
     this.close("Editor reconnected; inspect document state before retrying");
     this.token = randomUUID();
+    this.everAttached = true;
     this.seen = Date.now();
     return this.token;
   }
@@ -22,9 +23,21 @@ export class EditorBridge {
     if (!token || token !== this.token) throw new Error("Editor connection expired; reopen the panel");
     this.seen = Date.now();
   }
+  opened() { this.wasOpened = true; }
+  status() {
+    const attached = !!this.token && Date.now() - this.seen < this.lease;
+    return { attached, state: attached ? "ready" : this.everAttached ? "disconnected" : this.wasOpened ? "loading" : "not_opened" };
+  }
   async call(name, args, signal, prepare = async () => ({})) {
-    if (!this.token || Date.now() - this.seen > this.lease)
-      return failure("Open this plugin's editor with open_editor first, then retry after it is ready.");
+    const status = this.status();
+    if (!status.attached) {
+      const messages = {
+        not_opened: "Editor has not been opened. Call open_editor with the intended workspace.",
+        loading: "Editor page was requested but automation is still loading. Wait for editor_status.state=ready; if no panel is visible, use open_browser_editor.",
+        disconnected: "Editor panel disconnected or its connection expired. Reconnect the existing panel and wait for editor_status.state=ready before retrying.",
+      };
+      return { ...failure(messages[status.state]), structuredContent: { ...status, retryable: true } };
+    }
     if (this.requests.size + this.preparing >= 32) return failure("Editor is busy; wait for pending operations");
     const token = this.token;
     let prepared;

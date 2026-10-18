@@ -1,11 +1,11 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261018.3",
-  "url": "https://github.com/full-aigc-plugins/cadcraft-plugin/releases/download/v0.1.0-dev.20261018.3/cadcraft-runtime.tgz",
-  "sha256": "19b56060ab2728dd6a2345e789524557a94edb1fc7e9eba8bc679a7a852ce2ee",
+  "version": "0.1.0-dev.20261019.1",
+  "url": "https://github.com/full-aigc-plugins/cadcraft-plugin/releases/download/v0.1.0-dev.20261019.1/cadcraft-runtime.tgz",
+  "sha256": "69d6a09f72c040c0cb8b1a90fc1cc4bd2caf87887f22271691986d437f732330",
   "files": {
-    "adapter.mjs": "162794f336b01b2f21b4135b14a0004cc5e57c3da678f9f596a53ae1f637b49d",
-    "editor/BUILD.json": "fecfd2a1d0b37614caace4eafd6f84694f6da534b68993277522bdcd5b2b52b2",
+    "adapter.mjs": "aeb6b7f8ad874936efc5cb2d30d5725d157e027f3724864873eabfe8f0c72541",
+    "editor/BUILD.json": "a53d0fa41a6b9874303f74b0031509e3d5f16f058f28b04c716912bbba8d03ee",
     "editor/assets/0bb3ee3fdbc94c6caa0072d41586196a23fe03c6646d93fecbb20216377c9b08.gz": "7f9ab138061cf7e4044aa1c2c28fc52560330be7b5f64af308ae6a4aff09d037",
     "editor/assets/0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594.gz": "5f25851ed04830cdd8268f5c219bb5e1c80f2cb19692508b2e65b597e59f178a",
     "editor/assets/1484c37b549525ae71c6dc9811c8550b0b784868b4035b89b9a41e218b699959.gz": "4da4acb2646299c49d8a9924c6964b0a783bc8502518ec4a17202a7a28af8881",
@@ -23,7 +23,7 @@
     "editor/assets/cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30.gz": "4fcf7b50060af62cc9573c100762bb8ddd65114ea612c6395c091f6a4776ec60",
     "editor/assets/e753d7155d53c747d037a445e584c8ecfca6dd79846db610417e282a736b28bc.gz": "1ff571e9c640d66497cea03a69424e7337e7889748376fc57483cd0aacd4763e",
     "editor/assets/e8d79b55a99a180197abfac255f5e20ce61c9610c4d1b2b0cde08055d15f98d8.gz": "7f8f9b2099b807c1c1c4f04e3f5462550a759049901f8151c064e0eaa973a9ed",
-    "editor/assets.json": "b6ebc151867a8236d3bdcb78482165be4c40a985eeb22fdfab81d62e472b466f",
+    "editor/assets.json": "b7e730b18b289c6ea79b87332482ea7ddfd24123da4e371a6e90b00e1fdbb469",
     "editor/licenses/ATTRIBUTION.md": "59cd0595dd708a1087b0126ed7620b757be6a2c4352570566a8074601083580c",
     "editor/licenses/FONT-PROVENANCE.json": "19765c0a070567dbac9bef6cf0d6505c6b2f00b3f24e68049f1f5a5dbf0e690e",
     "editor/licenses/JAVASCRIPT-NOTICES.txt": "768f574458916a5b95dec21c680ef1b07034e808d076bc2b5521f398b201dbf4",
@@ -37,12 +37,12 @@
     "editor/licenses/OFL-LXGWWenKai.txt": "1a25e35da1031c6c3436fde545bb9cb5aca954e9873afe510c834b8b79bd21a0",
     "editor/licenses/THIRD-PARTY-NOTICES.txt": "a80ae3cf7f53bab1262adbc602f50a202257ace80eda7f20e17f3f60ea131dfd",
     "editor/licenses/docs/brand/LICENSE-brand.txt": "382b7443d4346ba31115a9d7a1f3fcfc16e44c39c94654b01998e09cef8a2679",
-    "editor/panel.html": "2c945a1ec7f44fed212f8a14de00091fb8b9d6611dd01e5d76817670530665fc",
-    "editor/server.mjs": "447a8df579d167c9b63358163e86c89ae8b2a416f5d69a7de725b3bff35ea778",
+    "editor/panel.html": "403bd9e7614766b9f8ba09ecf61fe99c3dc42f9243f990639d3104d96fc609e4",
+    "editor/server.mjs": "5625c56477b829c1361de01fd0137c1fe8845627fba44a58193b39810144bf37",
     "editor/tools.json": "e8d79b55a99a180197abfac255f5e20ce61c9610c4d1b2b0cde08055d15f98d8",
-    "host.js": "5e8059bc281ee419098dc67c73b081c7e690f95eaa1df640a0c3700692f09c58",
+    "host.js": "d69553167698af052a6c76df2f91184cd5eb07d2dc6c4cbfb25635552bbcc023",
     "host.js.LEGAL.txt": "eda25878a01ef5903efe932a6e7c99e175023a47ce70b7d7f901ab2c07c06562"
   },
-  "scope": "Pinned editor artifact; bundled upstream/build provenance remains in editor/BUILD.json or config.json. This does not certify all upstream main capabilities.",
-  "catalogSha256": "6608f1b4f97b9e5a7d66fda168a44f3482c7be9a477012fc65e29e04753c2251"
+  "catalogSha256": "d1749ccc14cc3842a49d9c702db907cc38b669bb4ad5286b85b67f0aa3526267",
+  "scope": "Source-built development runtime; public release and production acceptance are separate."
 }
