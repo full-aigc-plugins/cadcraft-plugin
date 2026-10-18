@@ -31,7 +31,7 @@ elif name == 'vectorcraft':
 elif name in ('designcraft', 'wordcraft'):
     replace('crates/fonts/build.rs', 'if wasm && !(*family == "BIZ UDPGothic" && *style == "Regular")',
             'if wasm && *family != "LXGW WenKai" && !(*family == "BIZ UDPGothic" && *style == "Regular")')
-elif name == 'pdfcraft':
+elif name in ('pdfcraft', 'cadcraft'):
     replace('crates/fonts/build.rs', 'if wasm && !web_face', 'if wasm && *family != "LXGW WenKai" && !web_face')
 elif name == 'deckcraft':
     replace('crates/fonts/build.rs', 'if wasm && !matches!', 'if wasm && *family != "LXGW WenKai" && !matches!')
