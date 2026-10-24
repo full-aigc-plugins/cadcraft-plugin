@@ -9,10 +9,21 @@
         "ref": "v0.1.0-dev.20261019.1"
       },
       "interface": {
-        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/cadcraft-plugin@v0.1.0-dev.20261018.4/assets/official-logo.png"
+        "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/cadcraft-plugin@v0.1.0-dev.20261018.4/assets/official-logo.png",
+        "displayName": "CADCraft · 2D Drafting",
+        "shortDescription": "Floor plans, hole patterns, dimensions and sheet output"
       },
       "version": "0.1.0-dev.20261019.1",
-      "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/cadcraft-plugin@v0.1.0-dev.20261019.1/assets/official-logo.png"
+      "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/cadcraft-plugin@v0.1.0-dev.20261019.1/assets/official-logo.png",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Creativity",
+      "description": "Floor plans, hole patterns, dimensioning, layer cleanup and sheet output. Millimeter coordinates, layers and plot scales are verifiable."
     }
-  ]
+  ],
+  "interface": {
+    "displayName": "CADCraft · 2D Drafting"
+  }
 }
