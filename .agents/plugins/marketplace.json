@@ -20,7 +20,11 @@
         "authentication": "ON_USE"
       },
       "category": "Creativity",
-      "description": "Floor plans, hole patterns, dimensioning, layer cleanup and sheet output. Millimeter coordinates, layers and plot scales are verifiable."
+      "description": "Floor plans, hole patterns, dimensioning, layer cleanup and sheet output. Millimeter coordinates, layers and plot scales are verifiable.",
+      "line": "full-aigc",
+      "componentTypes": [
+        "ui"
+      ]
     }
   ],
   "interface": {

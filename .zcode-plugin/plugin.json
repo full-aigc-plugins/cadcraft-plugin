@@ -18,8 +18,37 @@
   "skills": "./skills/",
   "displayName": "CADCraft · 2D Drafting",
   "icon": "./assets/official-logo.png",
-  "mcpServers": "./.mcp.json",
+  "mcpServers": {
+    "cadcraft-editor": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "${ZCODE_PLUGIN_ROOT}/ui/bootstrap.mjs"
+      ],
+      "cwd": "${ZCODE_PROJECT_DIR}",
+      "env": {
+        "CRAFT_PANEL_METADATA_FILE": "${ZCODE_PLUGIN_ROOT}/.zcode-plugin/panel-meta.json",
+        "CRAFT_WORKSPACE_ROOT": "${ZCODE_PROJECT_DIR}"
+      }
+    }
+  },
   "displayName_i18n": {
     "en": "CADCraft · 2D Drafting"
-  }
+  },
+  "ui": {
+    "surfaces": [
+      {
+        "id": "editor",
+        "title": {
+          "en-US": "CADCraft · 2D Drafting",
+          "zh-CN": "CADCraft · 二维制图"
+        },
+        "icon": "ruler",
+        "server": "cadcraft-editor",
+        "resourceUri": "ui://cadcraft/panel.html",
+        "availability": "session"
+      }
+    ]
+  },
+  "commands": "commands"
 }
