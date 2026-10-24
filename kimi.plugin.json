@@ -1,7 +1,7 @@
 {
   "name": "cadcraft",
   "version": "0.1.0-dev.20261019.1",
-  "description": "Floor plans, hole patterns, dimensioning, layer cleanup and sheet output. Millimeter coordinates, layers and plot scales are verifiable.",
+  "description": "房间平面、法兰孔系、尺寸标注、图层清理与图框出图；毫米坐标、图层与出图比例可复核。",
   "author": {
     "name": "Full AIGC Plugins",
     "url": "https://github.com/full-aigc-plugins"
@@ -17,8 +17,8 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "CADCraft · 2D Drafting",
-    "shortDescription": "Floor plans, hole patterns, dimensions and sheet output",
+    "displayName": "CADCraft（二维制图）",
+    "shortDescription": "平面图、孔系、标注与出图，可编辑图纸",
     "longDescription": "Use CADCraft's native command engine through MCP to draw, inspect, render, and save 2D CAD documents. Requires cadcraft-cli on the host.",
     "developerName": "Full AIGC Plugins",
     "category": "Productivity",

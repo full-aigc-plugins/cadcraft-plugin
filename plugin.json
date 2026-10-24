@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cadcraft",
   "version": "0.1.0-dev.20261019.1",
-  "description": "Floor plans, hole patterns, dimensioning, layer cleanup and sheet output. Millimeter coordinates, layers and plot scales are verifiable.",
+  "description": "房间平面、法兰孔系、尺寸标注、图层清理与图框出图；毫米坐标、图层与出图比例可复核。",
   "author": {
     "name": "Full AIGC Plugins",
     "url": "https://github.com/full-aigc-plugins"
@@ -19,8 +19,8 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "CADCraft · 2D Drafting",
-        "shortDescription": "Floor plans, hole patterns, dimensions and sheet output",
+        "displayName": "CADCraft（二维制图）",
+        "shortDescription": "平面图、孔系、标注与出图，可编辑图纸",
         "category": "Productivity",
         "capabilities": [
           "Read",

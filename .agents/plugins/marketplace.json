@@ -10,8 +10,8 @@
       },
       "interface": {
         "logo": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/cadcraft-plugin@v0.1.0-dev.20261018.4/assets/official-logo.png",
-        "displayName": "CADCraft · 2D Drafting",
-        "shortDescription": "Floor plans, hole patterns, dimensions and sheet output"
+        "displayName": "CADCraft（二维制图）",
+        "shortDescription": "平面图、孔系、标注与出图，可编辑图纸"
       },
       "version": "0.1.0-dev.20261019.1",
       "icon": "https://cdn.jsdelivr.net/gh/full-aigc-plugins/cadcraft-plugin@v0.1.0-dev.20261019.1/assets/official-logo.png",
@@ -20,7 +20,7 @@
         "authentication": "ON_USE"
       },
       "category": "Creativity",
-      "description": "Floor plans, hole patterns, dimensioning, layer cleanup and sheet output. Millimeter coordinates, layers and plot scales are verifiable.",
+      "description": "房间平面、法兰孔系、尺寸标注、图层清理与图框出图；毫米坐标、图层与出图比例可复核。",
       "line": "full-aigc",
       "componentTypes": [
         "ui"
@@ -28,6 +28,6 @@
     }
   ],
   "interface": {
-    "displayName": "CADCraft · 2D Drafting"
+    "displayName": "CADCraft（二维制图）"
   }
 }
