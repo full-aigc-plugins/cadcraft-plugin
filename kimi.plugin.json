@@ -1,7 +1,7 @@
 {
   "name": "cadcraft",
   "version": "0.1.0-dev.20261019.1",
-  "description": "Control CADCraft drawings through its native MCP server and independently pinned skills.",
+  "description": "Floor plans, hole patterns, dimensioning, layer cleanup and sheet output. Millimeter coordinates, layers and plot scales are verifiable.",
   "author": {
     "name": "Full AIGC Plugins",
     "url": "https://github.com/full-aigc-plugins"
@@ -17,8 +17,8 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "CADCraft Use",
-    "shortDescription": "Create and inspect CAD drawings",
+    "displayName": "CADCraft · 2D Drafting",
+    "shortDescription": "Floor plans, hole patterns, dimensions and sheet output",
     "longDescription": "Use CADCraft's native command engine through MCP to draw, inspect, render, and save 2D CAD documents. Requires cadcraft-cli on the host.",
     "developerName": "Full AIGC Plugins",
     "category": "Productivity",

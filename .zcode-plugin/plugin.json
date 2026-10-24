@@ -1,7 +1,7 @@
 {
   "name": "cadcraft",
   "version": "0.1.0-dev.20261019.1",
-  "description": "Control CADCraft drawings through its native MCP server and independently pinned skills.",
+  "description": "Floor plans, hole patterns, dimensioning, layer cleanup and sheet output. Millimeter coordinates, layers and plot scales are verifiable.",
   "author": {
     "name": "Full AIGC Plugins",
     "url": "https://github.com/full-aigc-plugins"
@@ -16,7 +16,10 @@
     "mcp"
   ],
   "skills": "./skills/",
-  "displayName": "CADCraft Use",
+  "displayName": "CADCraft · 2D Drafting",
   "icon": "./assets/official-logo.png",
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "displayName_i18n": {
+    "en": "CADCraft · 2D Drafting"
+  }
 }
