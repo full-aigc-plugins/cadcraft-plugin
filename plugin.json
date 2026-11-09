@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261109.4",
+  "version": "0.1.0-dev.20261109.5",
   "description": "画房间平面、法兰孔系和零件标注：毫米坐标、图层与出图比例都能逐项复核。",
   "author": {
     "name": "Full AIGC Plugins",
@@ -19,7 +19,7 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "CADCraft",
+        "displayName": "CADCraft（三维制图）",
         "shortDescription": "画房间平面、法兰孔系和零件标注：毫米坐标、图层与出图比例都能逐项复核。",
         "category": "Productivity",
         "capabilities": [

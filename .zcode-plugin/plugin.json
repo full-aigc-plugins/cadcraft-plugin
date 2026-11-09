@@ -1,6 +1,6 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261109.4",
+  "version": "0.1.0-dev.20261109.5",
   "description": "画房间平面、法兰孔系和零件标注：毫米坐标、图层与出图比例都能逐项复核。",
   "author": {
     "name": "Full AIGC Plugins",
@@ -16,7 +16,7 @@
     "mcp"
   ],
   "skills": "./skills/",
-  "displayName": "CADCraft",
+  "displayName": "CADCraft（三维制图）",
   "icon": "./assets/official-logo.png",
   "mcpServers": {
     "cadcraft-editor": {
@@ -34,7 +34,7 @@
   },
   "displayName_i18n": {
     "en": "CADCraft",
-    "zh-CN": "CADCraft"
+    "zh-CN": "CADCraft（三维制图）"
   },
   "ui": {
     "surfaces": [
@@ -42,7 +42,7 @@
         "id": "editor",
         "title": {
           "en-US": "CADCraft",
-          "zh-CN": "CADCraft"
+          "zh-CN": "CADCraft（三维制图）"
         },
         "icon": "ruler",
         "server": "cadcraft-editor",
