@@ -1,6 +1,6 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261109.4",
+  "version": "0.1.0-dev.20261109.5",
   "description": "画房间平面、法兰孔系和零件标注：毫米坐标、图层与出图比例都能逐项复核。",
   "author": {
     "name": "Full AIGC Plugins",
@@ -17,7 +17,7 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "CADCraft",
+    "displayName": "CADCraft（三维制图）",
     "shortDescription": "画房间平面、法兰孔系和零件标注：毫米坐标、图层与出图比例都能逐项复核。",
     "longDescription": "Use CADCraft's native command engine through MCP to draw, inspect, render, and save 2D CAD documents. Requires cadcraft-cli on the host.",
     "developerName": "Full AIGC Plugins",
