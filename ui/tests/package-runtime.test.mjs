@@ -38,6 +38,7 @@ test('packaged source version, archive hashes and bootstrap catalog agree withou
   assert.equal(await verifyRuntime(extracted,lock.files),true);
   await cp(extracted,join(pkg,'ui/dist'),{recursive:true});
   await cp(join(ui,'bootstrap.mjs'),join(pkg,'ui/bootstrap.mjs'));
+  await cp(join(ui,'zcode-parity.mjs'),join(pkg,'ui/zcode-parity.mjs'));
   const direct=new Client({name:'runtime-version-test',version:'1'});
   await direct.connect(new StdioClientTransport({command:process.execPath,args:[join(runtime,'adapter.mjs')],cwd:pkg,env:{...process.env,CRAFT_EDITOR_UPDATE:'off'},stderr:'pipe'}));
   try{assert.equal(direct.getServerVersion().version,version);}finally{await direct.close();}
