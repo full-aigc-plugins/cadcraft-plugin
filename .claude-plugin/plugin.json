@@ -1,6 +1,6 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261109.2",
+  "version": "0.1.0-dev.20261109.3",
   "description": "Floor plans, hole patterns, dimensioning, layer cleanup and sheet output. Millimeter coordinates, layers and plot scales are verifiable.",
   "author": {
     "name": "Full AIGC Plugins",

@@ -1,11 +1,11 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261109.2",
+  "version": "0.1.0-dev.20261109.3",
   "description": "Floor plans, hole patterns, dimensioning, layer cleanup and sheet output. Millimeter coordinates, layers and plot scales are verifiable.",
   "skills": "./skills/",
   "interface": {
-    "displayName": "CADCraft · 2D Drafting",
-    "shortDescription": "Floor plans, hole patterns, dimensions and sheet output",
+    "displayName": "CADCraft",
+    "shortDescription": "画房间平面、法兰孔系和零件标注：毫米坐标、图层与出图比例都能逐项复核。",
     "category": "Productivity",
     "capabilities": [
       "Read",

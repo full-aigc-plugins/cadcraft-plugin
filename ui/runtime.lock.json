@@ -1,7 +1,7 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261109.2",
-  "url": "https://github.com/full-aigc-plugins/cadcraft-plugin/releases/download/v0.1.0-dev.20261109.2/cadcraft-runtime.tgz",
+  "version": "0.1.0-dev.20261109.3",
+  "url": "https://github.com/full-aigc-plugins/cadcraft-plugin/releases/download/v0.1.0-dev.20261109.3/cadcraft-runtime.tgz",
   "sha256": "54c1bdeb7199c93d851a9d0afce12ce5b0c8da6ea38a5a30e2f2c671a2d0eb5b",
   "files": {
     "adapter.mjs": "a0d5a3bf0670810e5b84e6484f7cd440dda9e1945881910e948a2df3de785498",
