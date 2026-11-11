@@ -1,6 +1,6 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261109.5",
+  "version": "0.1.0-dev.20261111.1",
   "url": "https://github.com/full-aigc-plugins/cadcraft-plugin/releases/download/v0.1.0-dev.20261109.5/cadcraft-runtime.tgz",
   "sha256": "54c1bdeb7199c93d851a9d0afce12ce5b0c8da6ea38a5a30e2f2c671a2d0eb5b",
   "files": {
@@ -44,5 +44,6 @@
     "host.js.LEGAL.txt": "eda25878a01ef5903efe932a6e7c99e175023a47ce70b7d7f901ab2c07c06562"
   },
   "catalogSha256": "d1749ccc14cc3842a49d9c702db907cc38b669bb4ad5286b85b67f0aa3526267",
-  "scope": "Source-built development runtime; public release and production acceptance are separate."
+  "scope": "Source-built development runtime; public release and production acceptance are separate.",
+  "artifactVersion": "0.1.0-dev.20261109.5"
 }
