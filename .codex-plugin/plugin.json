@@ -1,6 +1,6 @@
 {
   "name": "cadcraft",
-  "version": "0.1.0-dev.20261109.5",
+  "version": "0.1.0-dev.20261111.1",
   "description": "画房间平面、法兰孔系和零件标注：毫米坐标、图层与出图比例都能逐项复核。",
   "skills": "./skills/",
   "interface": {

@@ -35,7 +35,8 @@ def main() -> None:
     for relative in ['.claude-plugin/plugin.json', '.zcode-plugin/plugin.json', 'kimi.plugin.json', 'package.json', 'dsh/package.json', 'ui/runtime.lock.json']:
         require(json.loads((ROOT / relative).read_text())['version'] == plugin['version'], 'version differs: ' + relative)
     runtime = json.loads((ROOT / 'ui/runtime.lock.json').read_text())
-    require(runtime['url'].endswith('/v' + plugin['version'] + '/cadcraft-runtime.tgz'), 'runtime URL version differs')
+    artifact_version = runtime.get('artifactVersion', runtime['version'])
+    require(runtime['url'].endswith('/v' + artifact_version + '/cadcraft-runtime.tgz'), 'runtime URL version differs')
     require(hashlib.sha256((ROOT / 'ui/catalog.lock.json').read_bytes()).hexdigest() == runtime['catalogSha256'], 'runtime catalog digest differs')
     require(mcp.get("$schema") == MCP_SCHEMA and set(mcp) == {"$schema", "mcpServers"}, "invalid MCP manifest")
     server = mcp["mcpServers"].get("cadcraft-editor")
